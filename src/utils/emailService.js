@@ -1,16 +1,17 @@
 import nodemailer from 'nodemailer';
-
+import dotenv from 'dotenv';
+dotenv.config();
 export const sendEmail = async ({ to, subject, text }) => {
   const transporter = nodemailer.createTransport({
-    service: 'gmail', // use Gmail for simplicity
+    service: 'gmail', 
     auth: {
-      user: 'pk.hmrtech@gmail.com',
-      pass: 'luqy zqlm imjc qdcw', // App password generated from Google
+       user: process.env.EMAIL_USER,   
+      pass: process.env.EMAIL_PASS,   
     },
   });
 
   const mailOptions = {
-    from: '"Your App Name" <pk.hmrtech@gmail.com>',
+    from: '"Your ecommerce password" <pk.hmrtech@gmail.com>',
     to,
     subject,
     text,

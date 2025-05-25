@@ -4,7 +4,7 @@ import authRoutes from './routes/authRoutes.js';
 const app = express();
 app.use(express.json());
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your_session_secret',
+  secret: 'your_session_secret',
   resave: false,
   saveUninitialized: false,
   cookie: { secure: false, httpOnly: true }, 
