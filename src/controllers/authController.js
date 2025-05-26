@@ -80,6 +80,8 @@ export const forgotPassword = async (req, res) => {
             return res.status(400).json({ message: 'Email is required' });
         }
         const user = await findUserByEmail(email);
+        console.log(user);
+        
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

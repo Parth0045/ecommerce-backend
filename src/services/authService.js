@@ -1,20 +1,20 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import users from '../models/user.js';
 import dotenv from 'dotenv';
-dotenv.config();
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
+dotenv.config({path: '../.env'});
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
 
 
 export const registerUser = async ({ first_name, last_name, email, password, role, phone_number }) => {
-    const existingUser = await User.findOne({ where: { email } });
+    const existingUser = await users.findOne({ where: { email } });
     if (existingUser) {
         const error = new Error('Email already in use');
         throw error;
     }
     const password_hash = await bcrypt.hash(password, 10);
-    const user = await User.create({
+    const user = await users.create({
         first_name,
         last_name,
         email,
@@ -26,7 +26,7 @@ export const registerUser = async ({ first_name, last_name, email, password, rol
 };
 
 export const loginUser = async (email, password) => {
-    const user = await User.findOne({ where: { email, is_active: true } });
+    const user = await users.findOne({ where: { email, is_active: true } });
     if (!user) {
         const error = new Error('Invalid email or password');
         throw error;
@@ -45,7 +45,7 @@ export const loginUser = async (email, password) => {
 };
 
 export const getUserProfile = async (userId) => {
-    const user = await User.findByPk(userId);
+    const user = await users.findByPk(userId);
     return user;
 };
 
@@ -56,7 +56,7 @@ export const updateUserProfile = async (userId, updateData) => {
         email: updateData.email,
         phone_number: updateData.phone_number,
     };
-    const result = await User.update(filteredData, { where: { id: userId } });
+    const result = await users.update(filteredData, { where: { id: userId } });
     const updated = result[0];
     if (updated) {
         return true;
@@ -67,7 +67,7 @@ export const updateUserProfile = async (userId, updateData) => {
 };
 
 export const resetUserPassword = async (userId, oldPassword, newPassword) => {
-    const user = await User.findByPk(userId);
+    const user = await users.findByPk(userId);
     if (!user) {
         return { message: 'User not found' };
     }
@@ -88,5 +88,5 @@ export const forgotUserPassword = async (user, newPassword) => {
 };
 
 export const findUserByEmail = async (email) => {
-    return await User.findOne({ where: { email } });
+    return await users.findOne({ where: { email } });
 };
