@@ -1,20 +1,22 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/user.js';
+import users from '../models/user.js';
 import dotenv from 'dotenv';
 dotenv.config();
+dotenv.config({path: '../.env'});
+
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
 
 
-export const registerUser = async ({ first_name, last_name, email, password, role, phone_number }) => {
-    const existingUser = await User.findOne({ where: { email } });
+const createUser = async ({ first_name, last_name, email, password, role, phone_number }) => {
+    const existingUser = await users.findOne({ where: { email } });
     if (existingUser) {
         const error = new Error('Email already in use');
         throw error;
     }
     const password_hash = await bcrypt.hash(password, 10);
-    const user = await User.create({
+    const user = await users.create({
         first_name,
         last_name,
         email,
@@ -25,8 +27,8 @@ export const registerUser = async ({ first_name, last_name, email, password, rol
     return user;
 };
 
-export const loginUser = async (email, password) => {
-    const user = await User.findOne({ where: { email, is_active: true } });
+const loginUser = async (email, password) => {
+    const user = await users.findOne({ where: { email, is_active: true } });
     if (!user) {
         const error = new Error('Invalid email or password');
         throw error;
@@ -44,19 +46,20 @@ export const loginUser = async (email, password) => {
     return { token, user };
 };
 
-export const getUserProfile = async (userId) => {
-    const user = await User.findByPk(userId);
+const findUser = async (userId) => {
+    const user = await users.findByPk(userId);
+    
     return user;
 };
 
-export const updateUserProfile = async (userId, updateData) => {
+const updateUser = async (userId, updateData) => {
     const filteredData = {
         first_name: updateData.first_name,
         last_name: updateData.last_name,
         email: updateData.email,
         phone_number: updateData.phone_number,
     };
-    const result = await User.update(filteredData, { where: { id: userId } });
+    const result = await users.update(filteredData, { where: { id: userId } });
     const updated = result[0];
     if (updated) {
         return true;
@@ -66,8 +69,8 @@ export const updateUserProfile = async (userId, updateData) => {
 
 };
 
-export const resetUserPassword = async (userId, oldPassword, newPassword) => {
-    const user = await User.findByPk(userId);
+const resetUserPassword = async (userId, oldPassword, newPassword) => {
+    const user = await users.findByPk(userId);
     if (!user) {
         return { message: 'User not found' };
     }
@@ -81,12 +84,22 @@ export const resetUserPassword = async (userId, oldPassword, newPassword) => {
     return { message: 'Password reset successful' };
 };
 
-export const forgotUserPassword = async (user, newPassword) => {
+const forgotUserPassword = async (user, newPassword) => {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password_hash = hashedPassword;
     await user.save();
 };
 
-export const findUserByEmail = async (email) => {
-    return await User.findOne({ where: { email } });
+const findUserByEmail = async (email) => {
+    return await users.findOne({ where: { email } });
+};
+
+export {
+  createUser,
+  loginUser,
+  findUser,
+  updateUser,
+  resetUserPassword,
+  forgotUserPassword,
+  findUserByEmail
 };
