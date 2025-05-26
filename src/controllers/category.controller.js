@@ -11,9 +11,9 @@ const createCategoryController = async (req, res) => {
         const userId = req.user.id;
         const seller_id = userId;
         console.log(seller_id);
-        const categories_name = req.body.categories_name;
-        console.log(categories_name);
-        const categorie = await createCategory({ seller_id, categories_name });
+        const category_name = req.body.categories_name;
+        console.log(category_name);
+        const categorie = await createCategory({ seller_id, category_name });
         res.json({ message: 'Categories add successfully' });
     } catch (err) {
         res.json({ message: err.message });

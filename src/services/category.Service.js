@@ -1,11 +1,11 @@
 import categories from '../models/categories.js';
 
-const createCategory = async ({ seller_id, categories_name }) => {
+const createCategory = async ({ seller_id, category_name }) => {
 
 
     const categorie = await categories.create({
         seller_id,
-        categories_name,
+        category_name,
     });
     return categorie;
 };

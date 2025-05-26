@@ -1,13 +1,10 @@
 import subCategories from '../models/subCategories.js';
 
-const createSubCategory = async ({ categories_id, seller_id, sub_categories_name }) => {
-    console.log(sub_categories_name);
-    console.log(categories_id);
-
+const createSubCategory = async ({ category_id, seller_id, sub_category_name }) => {
     const subCategorie = await subCategories.create({
         seller_id,
-        categories_id,
-        sub_categories_name,
+        category_id,
+        sub_category_name,
     });
     return subCategorie;
 };
