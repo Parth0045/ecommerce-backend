@@ -1,6 +1,8 @@
 import { addCategories } from '../services/categoriesService.js';
 import { getCategories } from '../services/categoriesService.js';
 import { updateCategorie } from '../services/categoriesService.js';
+import { deleteCategorie } from '../services/categoriesService.js';
+import { displayCategorie } from '../services/categoriesService.js';
 
 export const addNewCategories = async (req, res) => {
     try {
@@ -14,7 +16,6 @@ export const addNewCategories = async (req, res) => {
     } catch (err) {
         res.json({ message: err.message });
     }
-
 };
 
 export const getAllcategories = async (req, res) => {
@@ -40,6 +41,28 @@ export const updateCategories = async (req, res) => {
         // console.log(seller_id);
         const categorie = await updateCategorie({seller_id, categorieId, updatedCategorieName }) ;
         res.send({ message: 'Categorie updated successfully'});
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+};
+
+export const deleteCategories = async (req, res) => {
+    try {
+ 
+        const categorieId = req.params.id;
+        const categorie = await deleteCategorie({categorieId }) ;
+        res.send({ message: 'Categorie deleted successfully'});
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+};
+
+export const displayCategories = async (req, res) => {
+    try {
+        const categorie = await displayCategorie();
+        console.log("display controller");
+        
+        res.json(categorie);
     } catch (err) {
         res.json({ message: err.message });
     }

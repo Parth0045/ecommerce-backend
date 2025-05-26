@@ -12,7 +12,7 @@ app.use(session({
   cookie: { secure: false, httpOnly: true }, 
 }));
 app.use('/api/auth', authRoutes);
-app.use('/api/seller', categoriesRoutes)
+app.use('/api', categoriesRoutes)
 app.use((req, res) => {
   res.status(404).json({ message: 'Not Found' });
 });
