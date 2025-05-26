@@ -66,8 +66,8 @@ export const updateProfile = async (req, res) => {
         const updateData = req.body;
         await updateUserProfile(userId, updateData);
         res.json({ message: 'Profile updated successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+    } catch  (err) {
+        res.    json({ message: err.message });
     }
 };
 

@@ -46,6 +46,7 @@ export const loginUser = async (email, password) => {
 
 export const getUserProfile = async (userId) => {
     const user = await users.findByPk(userId);
+    
     return user;
 };
 
