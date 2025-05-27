@@ -72,7 +72,7 @@ const fatchCategoryController = async (req, res) => {
 
 export {
 
-  createCategoryController ,
+  createCategoryController,
   getCategoryController,
   updateCategoryController,
   deleteCategoryController,

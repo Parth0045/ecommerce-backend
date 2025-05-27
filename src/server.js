@@ -28,13 +28,13 @@ app.use('/api', productsRoutes);
 app.use((req, res) => {
   res.status(404).json({ message: 'Not Found' });
 });
-
 const PORT = process.env.PORT || 3000;
 sequelize.authenticate()
   .then(() => {
     console.log('Database connected.');
     return sequelize.sync();
   })
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

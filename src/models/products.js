@@ -41,6 +41,11 @@ const product = sequelize.define('Product', {
       min: 0,
     },
   },
+    image_url: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+
   is_active: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
