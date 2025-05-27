@@ -3,8 +3,8 @@ import {
     getCategory,
     updateCategory,
     deleteCategory,
-    findeCategory
-} from '../services/category.Service.js';
+    fatchCategory
+} from '../services/category.service.js';
 
 const createCategoryController = async (req, res) => {
     try {
@@ -61,7 +61,7 @@ const deleteCategoryController = async (req, res) => {
 
 const fatchCategoryController = async (req, res) => {
     try {
-        const categorie = await findeCategory();
+        const categorie = await fatchCategory();
         console.log("display controller");
 
         res.json(categorie);

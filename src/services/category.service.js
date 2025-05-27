@@ -11,7 +11,6 @@ const createCategory = async ({ seller_id, category_name }) => {
 };
 
 const getCategory = async (seller_id) => {
-    // console.log(seller_id);
     const sellerID = seller_id.seller_id;
     // console.log(sellerID);        
     const categorie = await categories.findAll({
@@ -48,8 +47,7 @@ const deleteCategory = async ({ categorieId }) => {
     return result;
 };
 
-const findeCategory = async () => {
-
+const fatchCategory = async () => {
     const categorie = await categories.findAll();
     console.log(categorie);
     console.log("display cat service");
@@ -61,6 +59,6 @@ export {
     getCategory,
     updateCategory,
     deleteCategory,
-    findeCategory
+    fatchCategory
 }
 
