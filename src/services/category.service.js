@@ -29,11 +29,11 @@ const updateCategory = async ({ seller_id, categorieId, updatedCategorieName }) 
     console.log("Service ", updatedCategorieName);
     console.log("Service ", categorieId);
 
-    const result = await categories.update({ categories_name: updatedCategorieName }, { where: { id: categorieId } });
-    // const updated = result[0];
-    console.log(result);
+    const result = await categories.update({ category_name: updatedCategorieName }, { where: { id: categorieId } });
+    const updated = result[0];
+    console.log(updated);
 
-    return result;
+    return updated;
 };
 
 const deleteCategory = async ({ categorieId }) => {

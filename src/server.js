@@ -5,6 +5,7 @@ import sequelize from './config/dbConnect.js';
 import authRoutes from './routes/auth.routes.js';
 import categoriesRoutes from './routes/category.routes.js';
 import subCategoriesRoutes from './routes/subcategory.routes.js';
+import productsRoutes from './routes/product.routes.js';
 
 dotenv.config();
 dotenv.config({ path: '../.env' }); 
@@ -22,6 +23,7 @@ app.use(session({
 app.use('/api/auth', authRoutes);
 app.use('/api', categoriesRoutes);
 app.use('/api', subCategoriesRoutes);
+app.use('/api', productsRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not Found' });
