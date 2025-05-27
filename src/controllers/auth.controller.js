@@ -1,14 +1,8 @@
-import { registerUser } from '../services/authService.js';
-import { loginUser } from '../services/authService.js';
-import { getUserProfile } from '../services/authService.js';
-import { updateUserProfile } from '../services/authService.js';
-import { resetUserPassword } from '../services/authService.js';
-import { findUserByEmail } from '../services/authService.js';
-import { forgotUserPassword } from '../services/authService.js';
-import { sendEmail } from '../utils/emailService.js';
+import { createUser, loginUser, findUser, updateUser, resetUserPassword, forgotUserPassword, findUserByEmail } from '../services/auth.service.js'; 
+import { sendEmail } from '../utils/emailService.js'; 
 import { generateRandomPassword } from '../utils/password.js';
 
-export const register = async (req, res) => {
+const createUserController = async (req, res) => {
     try {
         const first_name = req.body.first_name;
         const last_name = req.body.last_name;
@@ -16,7 +10,7 @@ export const register = async (req, res) => {
         const password = req.body.password;
         const role = req.body.role;
         const phone_number = req.body.phone_number;
-        const user = await registerUser({ first_name, last_name, email, password, role, phone_number });
+        const user = await createUser({ first_name, last_name, email, password, role, phone_number });
         res.json({ message: 'User registered successfully' });
     } catch (err) {
         res.json({ message: err.message });
@@ -24,7 +18,7 @@ export const register = async (req, res) => {
 
 };
 
-export const login = async (req, res) => {
+const loginUserController = async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
@@ -39,17 +33,17 @@ export const login = async (req, res) => {
     }
 };
 
-export const logout = (req, res) => {
+const logoutUserController = (req, res) => {
     req.session.destroy(() => {
         res.clearCookie('connect.sid');
         res.json({ message: 'Logged out successfully' });
     });
 };
 
-export const getProfile = async (req, res) => {
+const getUserController = async (req, res) => {
     try {
         const userId = req.user.id;
-        const user = await getUserProfile(userId);
+        const user = await findUser(userId);
         if (!user) {
             return res.json({ message: 'User not found' });
         }
@@ -60,36 +54,31 @@ export const getProfile = async (req, res) => {
     }
 };
 
-export const updateProfile = async (req, res) => {
+const updateUserController = async (req, res) => {
     try {
         const userId = req.user.id;
         const updateData = req.body;
-        await updateUserProfile(userId, updateData);
+        await updateUser(userId, updateData);
         res.json({ message: 'Profile updated successfully' });
     } catch  (err) {
         res.    json({ message: err.message });
     }
 };
 
-export const forgotPassword = async (req, res) => {
+const forgotPasswordController = async (req, res) => {
     try {
         const email = req.body.email;
         console.log(email);
-        
         if (!email) {
             return res.status(400).json({ message: 'Email is required' });
         }
         const user = await findUserByEmail(email);
         console.log(user);
-        
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        
         const newPassword = generateRandomPassword();
-
         await forgotUserPassword(user, newPassword);
-
         await sendEmail({
             to: user.email,
             subject: 'Your new password',
@@ -102,7 +91,7 @@ export const forgotPassword = async (req, res) => {
     }
 };
 
-export const resetPassword = async (req, res) => {
+const resetPasswordController = async (req, res) => {
     try {
         const userId = req.user.id;
         const oldPassword = req.body.oldPassword;
@@ -120,6 +109,15 @@ export const resetPassword = async (req, res) => {
     }
 };
 
+export{
+  createUserController,
+  loginUserController,
+  logoutUserController,
+  getUserController,
+  forgotPasswordController,
+  resetPasswordController,
+  updateUserController,
+};
 
 
 

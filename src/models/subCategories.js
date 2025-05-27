@@ -11,11 +11,11 @@ const subCategories = sequelize.define('User', {
     type: DataTypes.UUID,
     primaryKey: true,
   },
-  categories_id: {
+  category_id: {
     type: DataTypes.UUID,
     primaryKey: true,
   },
-  sub_categories_name: {
+  sub_category_name: {
     type: DataTypes.STRING(100),
     allowNull: false,
   },

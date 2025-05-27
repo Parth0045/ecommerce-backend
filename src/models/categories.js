@@ -11,7 +11,7 @@ const categories = sequelize.define('User', {
     type: DataTypes.UUID,
     primaryKey: true,
   },
-  categories_name: {
+  category_name: {
     type: DataTypes.STRING(100),
     allowNull: false,
   },

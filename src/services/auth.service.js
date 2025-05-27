@@ -2,12 +2,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import users from '../models/user.js';
 import dotenv from 'dotenv';
+dotenv.config();
 dotenv.config({path: '../.env'});
+
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
 
 
-export const registerUser = async ({ first_name, last_name, email, password, role, phone_number }) => {
+const createUser = async ({ first_name, last_name, email, password, role, phone_number }) => {
     const existingUser = await users.findOne({ where: { email } });
     if (existingUser) {
         const error = new Error('Email already in use');
@@ -25,7 +27,7 @@ export const registerUser = async ({ first_name, last_name, email, password, rol
     return user;
 };
 
-export const loginUser = async (email, password) => {
+const loginUser = async (email, password) => {
     const user = await users.findOne({ where: { email, is_active: true } });
     if (!user) {
         const error = new Error('Invalid email or password');
@@ -44,13 +46,13 @@ export const loginUser = async (email, password) => {
     return { token, user };
 };
 
-export const getUserProfile = async (userId) => {
+const findUser = async (userId) => {
     const user = await users.findByPk(userId);
     
     return user;
 };
 
-export const updateUserProfile = async (userId, updateData) => {
+const updateUser = async (userId, updateData) => {
     const filteredData = {
         first_name: updateData.first_name,
         last_name: updateData.last_name,
@@ -67,7 +69,7 @@ export const updateUserProfile = async (userId, updateData) => {
 
 };
 
-export const resetUserPassword = async (userId, oldPassword, newPassword) => {
+const resetUserPassword = async (userId, oldPassword, newPassword) => {
     const user = await users.findByPk(userId);
     if (!user) {
         return { message: 'User not found' };
@@ -82,12 +84,22 @@ export const resetUserPassword = async (userId, oldPassword, newPassword) => {
     return { message: 'Password reset successful' };
 };
 
-export const forgotUserPassword = async (user, newPassword) => {
+const forgotUserPassword = async (user, newPassword) => {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password_hash = hashedPassword;
     await user.save();
 };
 
-export const findUserByEmail = async (email) => {
+const findUserByEmail = async (email) => {
     return await users.findOne({ where: { email } });
+};
+
+export {
+  createUser,
+  loginUser,
+  findUser,
+  updateUser,
+  resetUserPassword,
+  forgotUserPassword,
+  findUserByEmail
 };

@@ -1,16 +1,16 @@
 import categories from '../models/categories.js';
 
-export const addCategories = async ({seller_id, categories_name }) => {
+const createCategory = async ({ seller_id, category_name }) => {
 
 
     const categorie = await categories.create({
         seller_id,
-        categories_name,
+        category_name,
     });
     return categorie;
 };
 
-export const getCategories = async (seller_id) => {
+const getCategory = async (seller_id) => {
     // console.log(seller_id);
     const sellerID = seller_id.seller_id;
     // console.log(sellerID);        
@@ -24,7 +24,7 @@ export const getCategories = async (seller_id) => {
     return categorie;
 };
 
-export const updateCategorie = async ({ seller_id, categorieId, updatedCategorieName }) => {
+const updateCategory = async ({ seller_id, categorieId, updatedCategorieName }) => {
     // console.log(seller_id);
     const sellerID = seller_id.seller_id;
     console.log("Service ", updatedCategorieName);
@@ -37,7 +37,7 @@ export const updateCategorie = async ({ seller_id, categorieId, updatedCategorie
     return result;
 };
 
-export const deleteCategorie = async ({ categorieId }) => {
+const deleteCategory = async ({ categorieId }) => {
     console.log("Service ", categorieId);
     const result = await categories.destroy({
         where: {
@@ -48,11 +48,19 @@ export const deleteCategorie = async ({ categorieId }) => {
     return result;
 };
 
-export const displayCategorie = async () => {
-      
+const findeCategory = async () => {
+
     const categorie = await categories.findAll();
     console.log(categorie);
     console.log("display cat service");
     return categorie;
 };
+
+export {
+    createCategory,
+    getCategory,
+    updateCategory,
+    deleteCategory,
+    findeCategory
+}
 
