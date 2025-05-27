@@ -1,16 +1,12 @@
-import cloudinary from 'cloudinary';
-import dotenv, { config } from 'dotenv';
-dotenv.config({ path: '../.env' });
-dotenv.config();
-const CLOUD_API_KEY = process.env.CLOUD_API_KEY;
-console.log(CLOUD_API_KEY);
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
 
-const cloudConnect = cloudinary.config({
+dotenv.config();
+
+cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.CLOUD_API_KEY,
-    api_secret: process.env.CLOUD_API_SECRET,
-    secure: true
+    api_secret: process.env.CLOUD_API_SECRET
 });
-console.log(cloudinary.config());
 
-export default { cloudConnect };
+export default cloudinary;
