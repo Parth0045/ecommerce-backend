@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-dotenv.config({path: '../.env'});
+dotenv.config({ path: '../.env' });
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const userAuthMiddleware = (req, res, next) => {
@@ -17,6 +17,6 @@ const userAuthMiddleware = (req, res, next) => {
     return res.json({ message: 'Invalid or expired token' });
   }
 };
-export{
+export {
   userAuthMiddleware
 }

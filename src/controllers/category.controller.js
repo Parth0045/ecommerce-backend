@@ -3,8 +3,8 @@ import {
     getCategory,
     updateCategory,
     deleteCategory,
-    findeCategory
-} from '../services/category.Service.js';
+    fatchCategory
+} from '../services/category.service.js';
 
 const createCategoryController = async (req, res) => {
     try {
@@ -38,7 +38,7 @@ const updateCategoryController = async (req, res) => {
 
         const userId = req.user.id;
         const categorieId = req.params.id;
-        const updatedCategorieName = req.body.categories_name;
+        const updatedCategorieName = req.body.category_name;
         const seller_id = userId;
         // console.log(seller_id);
         const categorie = await updateCategory({ seller_id, categorieId, updatedCategorieName });
@@ -61,7 +61,7 @@ const deleteCategoryController = async (req, res) => {
 
 const fatchCategoryController = async (req, res) => {
     try {
-        const categorie = await findeCategory();
+        const categorie = await fatchCategory();
         console.log("display controller");
 
         res.json(categorie);
@@ -72,7 +72,7 @@ const fatchCategoryController = async (req, res) => {
 
 export {
 
-  createCategoryController ,
+  createCategoryController,
   getCategoryController,
   updateCategoryController,
   deleteCategoryController,

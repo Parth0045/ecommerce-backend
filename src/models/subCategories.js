@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/dbConnect.js';
 
-const subCategories = sequelize.define('User', {
+const subCategories = sequelize.define('subcategory', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,

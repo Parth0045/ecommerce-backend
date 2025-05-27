@@ -1,5 +1,5 @@
-import { createUser, loginUser, findUser, updateUser, resetUserPassword, forgotUserPassword, findUserByEmail } from '../services/auth.service.js'; 
-import { sendEmail } from '../utils/emailService.js'; 
+import { createUser, loginUser, findUser, updateUser, resetUserPassword, forgotUserPassword, findUserByEmail } from '../services/auth.service.js';
+import { sendEmail } from '../utils/emailService.js';
 import { generateRandomPassword } from '../utils/password.js';
 
 const createUserController = async (req, res) => {
@@ -23,9 +23,10 @@ const loginUserController = async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
         const result = await loginUser(email, password);
-        const token = result.token; req.session.jwt = token;
+        const token = result.token;
+        req.session.jwt = token;
         console.log(email);
-        
+
         res.json({ token, message: 'Logged in successfully' });
     } catch (err) {
         console.error(err);
@@ -60,8 +61,8 @@ const updateUserController = async (req, res) => {
         const updateData = req.body;
         await updateUser(userId, updateData);
         res.json({ message: 'Profile updated successfully' });
-    } catch  (err) {
-        res.    json({ message: err.message });
+    } catch (err) {
+        res.json({ message: err.message });
     }
 };
 
@@ -109,14 +110,14 @@ const resetPasswordController = async (req, res) => {
     }
 };
 
-export{
-  createUserController,
-  loginUserController,
-  logoutUserController,
-  getUserController,
-  forgotPasswordController,
-  resetPasswordController,
-  updateUserController,
+export {
+    createUserController,
+    loginUserController,
+    logoutUserController,
+    getUserController,
+    forgotPasswordController,
+    resetPasswordController,
+    updateUserController,
 };
 
 

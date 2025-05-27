@@ -11,7 +11,6 @@ const createCategory = async ({ seller_id, category_name }) => {
 };
 
 const getCategory = async (seller_id) => {
-    // console.log(seller_id);
     const sellerID = seller_id.seller_id;
     // console.log(sellerID);        
     const categorie = await categories.findAll({
@@ -30,11 +29,11 @@ const updateCategory = async ({ seller_id, categorieId, updatedCategorieName }) 
     console.log("Service ", updatedCategorieName);
     console.log("Service ", categorieId);
 
-    const result = await categories.update({ categories_name: updatedCategorieName }, { where: { id: categorieId } });
-    // const updated = result[0];
-    console.log(result);
+    const result = await categories.update({ category_name: updatedCategorieName }, { where: { id: categorieId } });
+    const updated = result[0];
+    console.log(updated);
 
-    return result;
+    return updated;
 };
 
 const deleteCategory = async ({ categorieId }) => {
@@ -48,8 +47,7 @@ const deleteCategory = async ({ categorieId }) => {
     return result;
 };
 
-const findeCategory = async () => {
-
+const fatchCategory = async () => {
     const categorie = await categories.findAll();
     console.log(categorie);
     console.log("display cat service");
@@ -61,6 +59,6 @@ export {
     getCategory,
     updateCategory,
     deleteCategory,
-    findeCategory
+    fatchCategory
 }
 

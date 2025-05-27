@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
+
 import dotenv, { config } from 'dotenv';
-// dotenv.config({path: '../.env'});
+dotenv.config({path: '../.env'});
 dotenv.config();
 const DB_NAME = process.env.DB_NAME;
 const DB_USER = process.env.DB_USER;
@@ -11,5 +12,6 @@ const dbConnect = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   dialect: 'postgres',
   logging: false,
 });
+
 
 export default dbConnect;
