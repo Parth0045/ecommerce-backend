@@ -6,6 +6,8 @@ import authRoutes from './routes/auth.routes.js';
 import categoriesRoutes from './routes/category.routes.js';
 import subCategoriesRoutes from './routes/subcategory.routes.js';
 import productsRoutes from './routes/product.routes.js';
+import cartRoutes from './routes/cart.routes.js';
+import wishlistRoutes from './routes/wishlist.routes.js';
 
 dotenv.config();
 dotenv.config({ path: '../.env' }); 
@@ -24,6 +26,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api', categoriesRoutes);
 app.use('/api', subCategoriesRoutes);
 app.use('/api', productsRoutes);
+app.use('/api', cartRoutes );
+app.use('/api', wishlistRoutes );
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not Found' });
