@@ -24,7 +24,6 @@ const getCategory = async (seller_id) => {
 };
 
 const updateCategory = async ({ seller_id, categorieId, updatedCategorieName }) => {
-    // console.log(seller_id);
     const sellerID = seller_id.seller_id;
     console.log("Service ", updatedCategorieName);
     console.log("Service ", categorieId);
