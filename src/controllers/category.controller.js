@@ -38,7 +38,7 @@ const updateCategoryController = async (req, res) => {
 
         const userId = req.user.id;
         const categorieId = req.params.id;
-        const updatedCategorieName = req.body.categories_name;
+        const updatedCategorieName = req.body.category_name;
         const seller_id = userId;
         // console.log(seller_id);
         const categorie = await updateCategory({ seller_id, categorieId, updatedCategorieName });

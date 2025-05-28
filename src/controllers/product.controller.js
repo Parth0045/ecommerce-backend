@@ -3,7 +3,8 @@ import {
 uploadProductImage
 
 } from '../services/products.service.js';
-// import { uploadFile } from '../utils/uploadImage.js';
+import { uploadFile } from '../utils/uploadImage.js';
+import fs from 'fs';
 
 const createProductController = async (req, res) => {
     try {
@@ -27,9 +28,14 @@ const createProductController = async (req, res) => {
 const imageProductController = async (req, res) => {
     try {
         const product_id = req.body.product_id;
-        console.log("from controller:",product_id);
-        const categorie = await uploadProductImage({product_id });
-        res.json({ message: 'Product image add successfully' });
+        const file = req.file;
+        if (!file) {
+            return res.json({ message: "No image file uploaded" });
+        }
+        const imageUrl = await uploadFile(file.path);
+        await uploadProductImage({ product_id, image_url: imageUrl });
+        fs.unlinkSync(file.path);
+        res.json({ message: 'Product image added successfully', imageUrl });
     } catch (err) {
         res.json({ message: err.message });
     }

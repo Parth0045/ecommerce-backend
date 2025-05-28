@@ -1,5 +1,4 @@
 import product from '../models/products.js';
-import categories from '../models/products.js';
 
 const createProduct = async ({ seller_id, category_id, subcategory_id, product_name, description, quantity, price }) => {
 
@@ -10,14 +9,16 @@ const createProduct = async ({ seller_id, category_id, subcategory_id, product_n
     });
     return categorie;
 };
-const uploadProductImage = async ({ product_id }) => {
-    console.log("Service ", product_id);
+const uploadProductImage = async ({ product_id, image_url }) => {
+    console.log("Updating product ID:", product_id);
+    const result = await product.update(
+        { image_url: image_url },
+        { where: { id: product_id } }
+    );
+    console.log("Update result:", result);
+    return result[0];
+};
 
-    const result = await categories.update({ image_url: updatedCategorieName }, { where: { id: product_id } });
-    const updated = result[0];
-    console.log(updated);
-    return updated;
-}
 export {
     createProduct,
     uploadProductImage

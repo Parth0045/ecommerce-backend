@@ -28,6 +28,7 @@ app.use('/api', productsRoutes);
 app.use((req, res) => {
   res.status(404).json({ message: 'Not Found' });
 });
+
 const PORT = process.env.PORT || 3000;
 sequelize.authenticate()
   .then(() => {
