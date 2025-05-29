@@ -3,12 +3,12 @@ import {
     getSellerOrders,
     getSellerOrderById,
     updateOrderStatus,
-    acceptOrderAndSendEmail,
     createBuyerOrder,
     getBuyerOrders,
     getBuyerOrderById,
     cancelBuyerOrder,
-    updateBuyerOrderAddress
+    updateBuyerOrderAddress,
+    acceptOrderAndSendEmail
 } from '../controllers/order.controller.js';
 
 import { userAuthMiddleware } from '../middlewares/auth.middleware.js';
