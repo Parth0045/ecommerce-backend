@@ -3,6 +3,7 @@ import {
     deleteWishlist,
     getWishlist
 } from '../services/wishlist.service.js';
+
 const createWishlistController = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -16,7 +17,6 @@ const createWishlistController = async (req, res) => {
 
 const getWishlistController = async (req, res) => {
     try {
-
         const userId = req.user.id;
         const wishlistItem = await getWishlist({ userId });
         res.json(wishlistItem);
@@ -25,13 +25,10 @@ const getWishlistController = async (req, res) => {
     }
 };
 
-
 const deleteWishlistController = async (req, res) => {
     try {
-
         const productId = req.params.productId;
         console.log(productId);
-        
         const categorie = await deleteWishlist({ productId });
         res.send({ message: 'wishlist deleted successfully' });
     } catch (err) {

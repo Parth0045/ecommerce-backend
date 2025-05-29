@@ -8,10 +8,7 @@ const createWishlist = async ({ userId, productId }) => {
         buyer_id,
         product_id,
     });
-
     return wishlistItem;
-
-    
 };
 
 const getWishlist = async (userId) => {
@@ -32,8 +29,6 @@ const deleteWishlist = async ({ productId }) => {
     });
     return result;
 };
-
-
 export {
     createWishlist,
     deleteWishlist,

@@ -55,6 +55,16 @@ const fatchProducts = async () => {
     return products;
 };
 
+const calculateOrderDetails = async (products) => {
+    let total_amount = 0;
+    let seller_id = null;
+    for (const item of products) {
+        const products = await product.findByPk(item.product_id);
+        seller_id = products.seller_id;
+        total_amount += products.price * item.quantity;
+    }
+    return { seller_id, total_amount };
+};
 
 export {
     createProduct,
@@ -62,5 +72,6 @@ export {
     getProduct,
     updateProduct,
     deleteProduct,
-    fatchProducts
+    fatchProducts,
+    calculateOrderDetails
 }
