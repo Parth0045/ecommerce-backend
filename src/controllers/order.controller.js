@@ -1,3 +1,4 @@
+import order from '../models/order.js';
 import {
     createOrderService,
     getSellerOrdersService,
@@ -8,28 +9,37 @@ import {
     getBuyerOrderByIdService,
     cancelBuyerOrderService,
     updateBuyerOrderAddressService,
-} from '../services/order.service.js';
-import { calculateOrderDetails } from '../services/products.service.js';
+    calculateOrderDetails,
+    createOrderItemService,
+    deleteOrderItemService
+    
 
-const createBuyerOrder = async (req, res) => {
+} from '../services/order.service.js';
+
+const createBuyerOrderController = async (req, res) => {
     try {
         const buyerId = req.user.id;
-        const products = req.body.products;
+        console.log(buyerId);
         const delivery_address = req.body.delivery_address;
-        if (!products) {
-            return res.status(400).json({ message: 'Product list is required.' });
-        }
+        console.log(delivery_address);
+        const products = req.body.products;
         const orderDetails = await calculateOrderDetails(products);
         const seller_id = orderDetails.seller_id;
         const total_amount = orderDetails.total_amount;
+        console.log(orderDetails);
+        
         const result = await createOrderService({ buyerId, seller_id, delivery_address, total_amount });
+
+        const orderItem = await createOrderItemService(products, buyerId);
+
         res.json({ message: 'Order created', order: result });
+
     } catch (err) {
         res.json({ message: err.message });
     }
 };
 
-const getBuyerOrders = async (req, res) => {
+const getBuyerOrdersController = async (req, res) => {
     try {
         const buyerId = req.user.id;
         const orders = await getBuyerOrdersService(buyerId);
@@ -39,7 +49,7 @@ const getBuyerOrders = async (req, res) => {
     }
 };
 
-const getBuyerOrderById = async (req, res) => {
+const getBuyerOrderByIdController = async (req, res) => {
     try {
         const orderId = req.params.id;
         const order = await getBuyerOrderByIdService(orderId);
@@ -49,20 +59,21 @@ const getBuyerOrderById = async (req, res) => {
     }
 };
 
-const cancelBuyerOrder = async (req, res) => {
+const cancelBuyerOrderController = async (req, res) => {
     try {
         const orderId = req.params.id;
         const result = await cancelBuyerOrderService(orderId);
+        const deleteWithOrderItem = await deleteOrderItemService(orderId);
         res.json({ message: 'Order cancellation requested', result });
     } catch (err) {
         res.json({ error: err.message });
     }
 };
 
-const updateBuyerOrderAddress = async (req, res) => {
+const updateBuyerOrderAddressController = async (req, res) => {
     try {
         const orderId = req.params.id;
-        const { delivery_address } = req.body;
+        const delivery_address  = req.body.delivery_address;
         const result = await updateBuyerOrderAddressService(orderId, delivery_address);
         res.json({ message: 'Delivery address updated', result });
     } catch (err) {
@@ -70,17 +81,19 @@ const updateBuyerOrderAddress = async (req, res) => {
     }
 };
 
-const getSellerOrders = async (req, res) => {
+const getSellerOrdersController = async (req, res) => {
     try {
         const sellerId = req.user.id;
-        const orders = await getSellerOrdersService(sellerId);
-        res.json(orders);
+        const ordersWithItems = await getSellerOrdersService(sellerId);
+
+        res.json({ orders: ordersWithItems });
     } catch (err) {
-        res.json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
 };
 
-const getSellerOrderById = async (req, res) => {
+
+const getSellerOrderByIdController = async (req, res) => {
     try {
         const orderId = req.params.id;
         const order = await getSellerOrderByIdService(orderId);
@@ -90,7 +103,7 @@ const getSellerOrderById = async (req, res) => {
     }
 };
 
-const updateOrderStatus = async (req, res) => {
+const updateOrderStatusController = async (req, res) => {
     try {
         const orderId = req.params.id;
         const status  = req.body.status;
@@ -101,7 +114,7 @@ const updateOrderStatus = async (req, res) => {
     }
 };
 
-const acceptOrderAndSendEmail = async (req, res) => {
+const acceptOrderAndSendEmailController = async (req, res) => {
     try {
         const orderId = req.params.orderId;
         const result = await acceptOrderAndSendEmailService(orderId);
@@ -111,16 +124,15 @@ const acceptOrderAndSendEmail = async (req, res) => {
     }
 };
 
-
-
 export {
-    getSellerOrders,
-    getSellerOrderById,
-    updateOrderStatus,
-    acceptOrderAndSendEmail,
-    createBuyerOrder,
-    getBuyerOrders,
-    getBuyerOrderById,
-    cancelBuyerOrder,
-    updateBuyerOrderAddress
+    getSellerOrdersController,
+    getSellerOrderByIdController,
+    updateOrderStatusController,
+    createBuyerOrderController,
+    getBuyerOrdersController,
+    getBuyerOrderByIdController,
+    cancelBuyerOrderController,
+    updateBuyerOrderAddressController,
+    acceptOrderAndSendEmailController
 }
+

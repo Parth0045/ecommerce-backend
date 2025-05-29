@@ -1,48 +1,40 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/dbConnect.js';
 
-const order = sequelize.define('order', {
+const orderItems = sequelize.define('order_items', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
-    seller_id: {
+    order_id: {
         type: DataTypes.UUID,
         allowNull: false,
     },
-    buyer_id: {
+    product_id: {
         type: DataTypes.UUID,
         allowNull: false,
     },
-    order_date: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-    },
-    status: {
-        type: DataTypes.STRING,
-        defaultValue: 'Pending',
-    },
-    total_amount: {
-        type: DataTypes.DECIMAL(12, 2),
+    price: {
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
-    delivery_address: {
-        type: DataTypes.TEXT,
+    quantity: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-    },
+        validate: {
+            min: 0,
+        },
+    },  
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
     },
-    updated_at: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-    },
+   
 }, {
-    tableName: 'orders',
+    tableName: 'orders_item',
     timestamps: false,
     underscored: true,
 });
 
-export default order;
+export default orderItems;

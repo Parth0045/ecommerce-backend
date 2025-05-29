@@ -35,7 +35,7 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Not Found' });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 sequelize.authenticate()
   .then(() => {
     console.log('Database connected.');

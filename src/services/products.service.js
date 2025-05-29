@@ -1,9 +1,9 @@
 import product from '../models/products.js';
+import categories from '../models/categories.js';
+import subCategories from '../models/subCategories.js';
 
 const createProduct = async ({ seller_id, category_id, subcategory_id, product_name, description, quantity, price }) => {
-
     console.log(description);
-
     const categorie = await product.create({
         seller_id, category_id, subcategory_id, product_name, description, quantity, price
     });
@@ -18,17 +18,26 @@ const uploadProductImage = async ({ product_id, image_url }) => {
     console.log("Update result:", result);
     return result[0];
 };
-const getProduct = async (seller_id) => {
-    const sellerID = seller_id.seller_id;
-    const products = await product.findAll({
-        where: {
-            seller_id: sellerID,
-        },
-    });
-    console.log(products);
-    console.log("hello");
-    return products;
+
+const getProduct = async (userId) => {
+  const products = await product.findAll({
+    where: { seller_id: userId },
+    include: [
+      {
+        model: categories,
+        as: 'category',
+        attributes: { exclude: ['deleted_at'] },
+      },
+      {
+        model: subCategories,
+        as: 'subCategory',
+        attributes: { exclude: ['deleted_at'] },
+      },
+    ],
+  });
+  return products;
 };
+
 const updateProduct = async ({ productId, updatedCategoryId, updatedSubCategoryId, updatedProductName, updatedDescription, updatedPrice, updatedQuantity }) => {
     console.log("Service ", updatedProductName);
     console.log("Service ", updatedDescription);
@@ -55,16 +64,7 @@ const fatchProducts = async () => {
     return products;
 };
 
-const calculateOrderDetails = async (products) => {
-    let total_amount = 0;
-    let seller_id = null;
-    for (const item of products) {
-        const products = await product.findByPk(item.product_id);
-        seller_id = products.seller_id;
-        total_amount += products.price * item.quantity;
-    }
-    return { seller_id, total_amount };
-};
+
 
 export {
     createProduct,
@@ -73,5 +73,4 @@ export {
     updateProduct,
     deleteProduct,
     fatchProducts,
-    calculateOrderDetails
 }
