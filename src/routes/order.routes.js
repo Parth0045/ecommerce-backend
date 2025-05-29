@@ -1,29 +1,30 @@
 import express from 'express';
 import {
-    getSellerOrders,
-    getSellerOrderById,
-    updateOrderStatus,
-    createBuyerOrder,
-    getBuyerOrders,
-    getBuyerOrderById,
-    cancelBuyerOrder,
-    updateBuyerOrderAddress,
-    acceptOrderAndSendEmail
+    getSellerOrdersController,
+    getSellerOrderByIdController,
+    updateOrderStatusController,
+    createBuyerOrderController,
+    getBuyerOrdersController,
+    getBuyerOrderByIdController,
+    cancelBuyerOrderController,
+    updateBuyerOrderAddressController,
+    acceptOrderAndSendEmailController
 } from '../controllers/order.controller.js';
 
 import { userAuthMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-router.get('/seller/orders', userAuthMiddleware, getSellerOrders);
-router.get('/seller/orders/:id', userAuthMiddleware, getSellerOrderById);
-router.put('/seller/orders/:id/status', userAuthMiddleware, updateOrderStatus);
-router.post('/seller/orders/:orderId/accept', userAuthMiddleware, acceptOrderAndSendEmail);
+router.get('/seller/orders', userAuthMiddleware, getSellerOrdersController);
+router.get('/seller/orders/:id', userAuthMiddleware, getSellerOrderByIdController);
+router.put('/seller/orders/:id/status', userAuthMiddleware, updateOrderStatusController);
+router.post('/seller/orders/:orderId/accept', userAuthMiddleware, acceptOrderAndSendEmailController);
 
-router.post('/buyer/orders', userAuthMiddleware, createBuyerOrder);
-router.get('/buyer/orders', userAuthMiddleware, getBuyerOrders);
-router.get('/buyer/orders/:id', userAuthMiddleware, getBuyerOrderById);
-router.delete('/buyer/orders/:id', userAuthMiddleware, cancelBuyerOrder);
-router.put('/buyer/orders/:id/update-address', userAuthMiddleware, updateBuyerOrderAddress);
+router.post('/buyer/orders', userAuthMiddleware, createBuyerOrderController);
+router.get('/buyer/orders', userAuthMiddleware, getBuyerOrdersController);
+router.get('/buyer/orders/:id', userAuthMiddleware, getBuyerOrderByIdController);
+router.delete('/buyer/orders/:id', userAuthMiddleware, cancelBuyerOrderController);
+router.put('/buyer/orders/:id/update-address', userAuthMiddleware, updateBuyerOrderAddressController);
 
 export default router;
+

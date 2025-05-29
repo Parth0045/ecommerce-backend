@@ -44,6 +44,8 @@ const imageProductController = async (req, res) => {
         res.json({ message: err.message });
     }
 };
+
+
 const getProductController = async (req, res) => {
     try {
 
@@ -56,6 +58,8 @@ const getProductController = async (req, res) => {
         res.json({ message: err.message });
     }
 };
+
+
 const updateProductController = async (req, res) => {
     try {
 

@@ -85,7 +85,7 @@ const forgotPasswordController = async (req, res) => {
             subject: 'Your new password',
             text: `Your password has been reset. Your new password is: ${newPassword}`,
         });
-        res.json({ message: 'Password reset link sent to your email' });
+        res.json({ message: 'Password sent to your email id' });
     } catch (err) {
         console.error('Error in forgotPassword:', err);
         res.status(500).json({ message: 'Server error' });
