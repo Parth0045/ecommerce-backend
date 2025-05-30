@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/dbConnect.js';
+import bcrypt from 'bcrypt';
 
 const users = sequelize.define('User', {
   id: {
@@ -9,24 +10,24 @@ const users = sequelize.define('User', {
   },
   first_name: {
     type: DataTypes.STRING(100),
-    allowNull: false,
+    allowNull: true,
   },
   last_name: {
     type: DataTypes.STRING(100),
-    allowNull: false,
+    allowNull: true,
   },
   email: {
     type: DataTypes.STRING(255),
     unique: true,
-    allowNull: false,
+    allowNull: true,
   },
   password_hash: {
     type: DataTypes.STRING(255),
-    allowNull: false,
+    allowNull: true,
   },
   role: {
     type: DataTypes.ENUM('seller', 'buyer'),
-    allowNull: false,
+    allowNull: true,
     defaultValue: 'buyer',
   },
   phone_number: {
@@ -52,6 +53,26 @@ const users = sequelize.define('User', {
   timestamps: false,
   paranoid: true,
   underscored: true,
+  hooks: {
+    beforeCreate: async (user) => {
+      if (user.password_hash) {
+        const salt = await bcrypt.genSalt(10);
+        user.password_hash = await bcrypt.hash(user.password_hash, salt);
+      }
+    },
+    beforeUpdate: async (user) => {
+      if (user.changed('password_hash')) {
+        const salt = await bcrypt.genSalt(10);
+        user.password_hash = await bcrypt.hash(user.password_hash, salt);
+      }
+    },
+  }
 });
+
+function validPassword(password) {
+  return bcrypt.compareSync(password, this.password_hash);
+}
+users.prototype.validPassword = validPassword;
+
 
 export default users;

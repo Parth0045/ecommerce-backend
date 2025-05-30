@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/dbConnect.js';
+import categories from './categories.js';
+import subCategories from './subCategories.js';
 
 const product = sequelize.define('Product', {
   id: {
@@ -41,11 +43,10 @@ const product = sequelize.define('Product', {
       min: 0,
     },
   },
-    image_url: {
+  image_url: {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-
   is_active: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
@@ -64,8 +65,19 @@ const product = sequelize.define('Product', {
   },
 }, {
   tableName: 'products',
-  timestamps: false,  
-  paranoid: false,    
+  timestamps: false,
+  paranoid: false,
+});
+
+// ✅ Define associations
+product.belongsTo(categories, {
+  foreignKey: 'category_id',
+  as: 'category',
+});
+
+product.belongsTo(subCategories, {
+  foreignKey: 'subcategory_id',
+  as: 'subCategory',
 });
 
 export default product;

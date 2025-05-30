@@ -8,7 +8,6 @@ import {
 
 } from '../services/products.service.js';
 import { uploadFile } from '../utils/uploadImage.js';
-import fs from 'fs';
 
 const createProductController = async (req, res) => {
     try {
@@ -45,20 +44,15 @@ const imageProductController = async (req, res) => {
     }
 };
 
-
 const getProductController = async (req, res) => {
-    try {
-
-        const userId = req.user.id;
-        const seller_id = userId;
-        console.log(seller_id);
-        const products = await getProduct({ seller_id });
-        res.json(products);
-    } catch (err) {
-        res.json({ message: err.message });
-    }
+  try {
+    const userId = req.user.id;
+    const products = await getProduct(userId);
+    res.json({data: products,});
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
 };
-
 
 const updateProductController = async (req, res) => {
     try {

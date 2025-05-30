@@ -1,9 +1,9 @@
 import product from '../models/products.js';
+import categories from '../models/categories.js';
+import subCategories from '../models/subCategories.js';
 
 const createProduct = async ({ seller_id, category_id, subcategory_id, product_name, description, quantity, price }) => {
-
     console.log(description);
-
     const categorie = await product.create({
         seller_id, category_id, subcategory_id, product_name, description, quantity, price
     });
@@ -18,16 +18,24 @@ const uploadProductImage = async ({ product_id, image_url }) => {
     console.log("Update result:", result);
     return result[0];
 };
-const getProduct = async (seller_id) => {
-    const sellerID = seller_id.seller_id;
-    const products = await product.findAll({
-        where: {
-            seller_id: sellerID,
-        },
-    });
-    console.log(products);
-    console.log("hello");
-    return products;
+
+const getProduct = async (userId) => {
+  const products = await product.findAll({
+    where: { seller_id: userId },
+    include: [
+      {
+        model: categories,
+        as: 'category',
+        attributes: { exclude: ['deleted_at'] },
+      },
+      {
+        model: subCategories,
+        as: 'subCategory',
+        attributes: { exclude: ['deleted_at'] },
+      },
+    ],
+  });
+  return products;
 };
 
 const updateProduct = async ({ productId, updatedCategoryId, updatedSubCategoryId, updatedProductName, updatedDescription, updatedPrice, updatedQuantity }) => {
