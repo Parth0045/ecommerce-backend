@@ -20,15 +20,18 @@ const createUser = async (userBody) => {
 
 const loginUser = async ({ email, password }) => {
     const user = await users.findOne({ where: { email, is_active: true } });
+    
     if (!user || !(await user.validPassword(password))) {
         throw new Error('Invalid email or password');
     }
+    
     const token = jwt.sign(
         { id: user.id, email: user.email, role: user.role },
         JWT_SECRET,
         { expiresIn: JWT_EXPIRES_IN }
     );
     return { token, user };
+
 };
 
 

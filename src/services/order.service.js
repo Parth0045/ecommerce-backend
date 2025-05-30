@@ -1,69 +1,98 @@
 import order from '../models/order.js';
 import users from '../models/user.js';
 import product from '../models/products.js';
+import sequelize from '../config/dbConnect.js';
 import orderItems from '../models/orderItem.js';
 import { sendOrderAcceptedEmail } from '../utils/emailOrderService.js';  // adjust relative path if needed
 
-const createOrderService = async ({ buyerId, seller_id, delivery_address, total_amount }) => {
-    const orders = await order.create({
-        buyer_id: buyerId,
-        seller_id,
-        delivery_address,
-        total_amount,
-        order_date: new Date(),
-        status: 'Pending',
+const createOrder = async ({ buyer_id, products, ...orderBody }) => {
+    const t = await sequelize.transaction();
+    try {
+        const orderRecord = await order.create({
+            buyer_id,
+            ...orderBody,
+            order_date: new Date(),
+            status: 'Pending',
+        }, { transaction: t });
 
-    });
-    return orders;
+        let orderItemsData = [];
+
+        for (const item of products) {
+            const { product_id, quantity } = item;
+            const productData = await product.findOne({
+                where: { id: product_id },
+                transaction: t,
+            });
+            if (!productData) {
+                throw new Error(`Product with ID ${product_id} not found`);
+            }
+            orderItemsData.push({
+                order_id: orderRecord.id,
+                product_id,
+                price: productData.price,
+                quantity,
+            });
+        }
+        await orderItems.bulkCreate(orderItemsData, {
+        transaction: t,
+        validate: true,
+        });
+        await t.commit();
+        // console.log(orderItemsData);
+        return orderRecord;
+    } catch (error) {
+        await t.rollback();
+        throw error;
+    }
 };
 
-const getBuyerOrdersService = async (buyerId) => {
+const getBuyerOrders = async (buyerId) => {
     const orders = await order.findAll({ where: { buyer_id: buyerId } });
     return orders;
 };
 
-const getBuyerOrderByIdService = async (orderId) => {
+const getBuyerOrderById = async (orderId) => {
     const orders = await order.findByPk(orderId);
     return orders;
 };
 
-const cancelBuyerOrderService = async (orderId) => {
+const cancelBuyerOrder = async (orderId) => {
     const orders = await order.findByPk(orderId);
     orders.status = 'Cancelled';
     const updatedOrder = await orders.save();
     return updatedOrder;
 };
 
-const updateBuyerOrderAddressService = async (orderId, delivery_address) => {
+const updateBuyerOrderAddress = async (orderId, delivery_address) => {
     const orders = await order.findByPk(orderId);
     orders.delivery_address = delivery_address;
     await orders.save();
     return orders;
 };
 
-const getSellerOrdersService = async (sellerId) => {
+const getSellerOrders = async (sellerId) => {
     const orders = await order.findAll({ where: { seller_id: sellerId } });
     const ordersWithItems = [];
     for (const singleOrder of orders) {
         const orderItemsData = await orderItems.findAll({ where: { order_id: singleOrder.id } });
-        ordersWithItems.push({...singleOrder.dataValues,  items: orderItemsData});
+        ordersWithItems.push({ ...singleOrder.dataValues, items: orderItemsData });
     }
     return ordersWithItems;
 };
 
-const getSellerOrderByIdService = async (orderId) => {
+const getSellerOrderById = async (orderId) => {
     const orderData = await order.findByPk(orderId);
     return orderData;
 };
 
-const updateOrderStatusService = async (orderId, status) => {
+const updateOrderStatus = async (orderId, status) => {
     const orders = await order.findByPk(orderId);
     orders.status = status;
     await orders.save();
     return orders;
 };
 
-const acceptOrderAndSendEmailService = async (orderId) => {
+const acceptOrderAndSendEmail = async (orderId) => {
     const orders = await order.findByPk(orderId);
     const buyer = await users.findByPk(orders.buyer_id);
     orders.status = 'Accepted';
@@ -84,40 +113,8 @@ const calculateOrderDetails = async (products) => {
     return { seller_id, total_amount };
 };
 
-const createOrderItemService = async (products, buyer_id) => {
-    try {
-        const orders = await order.findAll({ where: { buyer_id } });
-        for (const order of orders) {
-            for (const item of products) {
-                const existingOrderItem = await orderItems.findOne({
-                    where: {
-                        order_id: order.id,
-                        product_id: item.product_id
-                    },
-                });
 
-                if (existingOrderItem) 
-                {
-                        console.log("existing is skip")
-                }else
-                    {
-                    const productData = await product.findByPk(item.product_id);
-                    await orderItems.create({
-                        order_id: order.id,
-                        product_id: item.product_id,
-                        price: productData.price,
-                        quantity: item.quantity,
-                    });
-                    console.log("Created order item for order:");
-                }
-            }
-        }
-    } catch (error) {
-        console.error("Error creating order items:", error.message);
-    }
-};
-
-const deleteOrderItemService = async (orderId) => {
+const deleteOrderItem = async (orderId) => {
     const result = await orderItems.destroy({
         where: {
             order_id: orderId,
@@ -128,16 +125,15 @@ const deleteOrderItemService = async (orderId) => {
 };
 
 export {
-    createOrderService,
-    getSellerOrdersService,
-    getSellerOrderByIdService,
-    updateOrderStatusService,
-    getBuyerOrdersService,
-    getBuyerOrderByIdService,
-    cancelBuyerOrderService,
-    updateBuyerOrderAddressService,
+    createOrder,
+    getSellerOrders,
+    getSellerOrderById,
+    updateOrderStatus,
+    getBuyerOrders,
+    getBuyerOrderById,
+    cancelBuyerOrder,
+    updateBuyerOrderAddress,
     calculateOrderDetails,
-    acceptOrderAndSendEmailService,
-    createOrderItemService,
-    deleteOrderItemService
+    acceptOrderAndSendEmail,
+    deleteOrderItem
 } 

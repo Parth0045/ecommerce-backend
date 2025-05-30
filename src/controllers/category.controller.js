@@ -14,7 +14,7 @@ const createCategoryController = async (req, res) => {
             message: 'Categories created successfully!',
             data: categories
         });
-    } catch (err) {
+    } catch (error) {
         throw Error(error);
     }
 };
@@ -73,7 +73,6 @@ const fatchAllCategoryController = async (req, res) => {
 };
 
 export {
-
     createCategoryController,
     getCategoryController,
     updateCategoryController,

@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/dbConnect.js';
+import orderItems from './orderItem.js';
 
 const order = sequelize.define('order', {
     id: {
@@ -9,11 +10,11 @@ const order = sequelize.define('order', {
     },
     seller_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     buyer_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     order_date: {
         type: DataTypes.DATE,
@@ -25,11 +26,11 @@ const order = sequelize.define('order', {
     },
     total_amount: {
         type: DataTypes.DECIMAL(12, 2),
-        allowNull: false,
+        allowNull: true,
     },
     delivery_address: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true ,
     },
     created_at: {
         type: DataTypes.DATE,
@@ -44,5 +45,8 @@ const order = sequelize.define('order', {
     timestamps: false,
     underscored: true,
 });
-
+// order.js
+order.hasMany(orderItems, { foreignKey: 'order_id' });
+orderItems.belongsTo(order, { foreignKey: 'order_id' });
+    
 export default order;

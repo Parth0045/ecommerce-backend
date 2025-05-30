@@ -43,9 +43,6 @@ const logoutUserController = (req, res) => {
 const getUserController = async (req, res) => {
     try {
         const user = await findUser(req.user.id);
-        if (!user) {
-            return res.json({ message: 'User not found' });
-        }
         return res.status(200).json({
             error: false,
             message: 'User get successfully!',
@@ -95,7 +92,6 @@ const forgotPasswordController = async (req, res) => {
         res.json({
             status: 'success',
             message: 'Password sent to your email id',
-            timestamp: new Date().toISOString(),
             data: user
         });
 
