@@ -11,11 +11,11 @@ const product = sequelize.define('Product', {
   },
   seller_id: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true,
   },
   category_id: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true,
   },
   subcategory_id: {
     type: DataTypes.UUID,
@@ -23,7 +23,7 @@ const product = sequelize.define('Product', {
   },
   product_name: {
     type: DataTypes.STRING(255),
-    allowNull: false,
+    allowNull: true,
   },
   description: {
     type: DataTypes.TEXT,
@@ -31,14 +31,14 @@ const product = sequelize.define('Product', {
   },
   price: {
     type: DataTypes.DECIMAL(10, 2),
-    allowNull: false,
+    allowNull: true,
     validate: {
       min: 0,
     },
   },
   quantity: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     validate: {
       min: 0,
     },
@@ -69,7 +69,6 @@ const product = sequelize.define('Product', {
   paranoid: false,
 });
 
-// ✅ Define associations
 product.belongsTo(categories, {
   foreignKey: 'category_id',
   as: 'category',

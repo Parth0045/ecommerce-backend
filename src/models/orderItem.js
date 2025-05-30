@@ -9,19 +9,19 @@ const orderItems = sequelize.define('order_items', {
     },
     order_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     product_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     price: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
+        allowNull: true,
     },
     quantity: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         validate: {
             min: 0,
         },

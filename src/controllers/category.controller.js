@@ -3,78 +3,79 @@ import {
     getCategory,
     updateCategory,
     deleteCategory,
-    fatchCategory
+    fatchAllCategory
 } from '../services/category.service.js';
 
 const createCategoryController = async (req, res) => {
     try {
-        const userId = req.user.id;
-        const seller_id = userId;
-        console.log(seller_id);
-        const category_name = req.body.categories_name;
-        console.log(category_name);
-        const categorie = await createCategory({ seller_id, category_name });
-        res.json({ message: 'Categories add successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const categories = await createCategory({ seller_id: req.user.id, ...req.body });
+        return res.status(200).json({
+            error: false,
+            message: 'Categories created successfully!',
+            data: categories
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const getCategoryController = async (req, res) => {
     try {
 
-        const userId = req.user.id;
-        const seller_id = userId;
-        console.log(seller_id);
-        const categorie = await getCategory({ seller_id });
-        res.json(categorie);
+        const categories = await getCategory({ ...req.user });
+        return res.status(200).json({
+            error: false,
+            message: "Categories retrieved successfully!",
+            data: categories
+        });
     } catch (err) {
-        res.json({ message: err.message });
+        throw Error(error);
     }
 };
 
 const updateCategoryController = async (req, res) => {
     try {
-
-        const userId = req.user.id;
-        const categorieId = req.params.id;
-        const updatedCategorieName = req.body.category_name;
-        const seller_id = userId;
-        // console.log(seller_id);
-        const categorie = await updateCategory({ seller_id, categorieId, updatedCategorieName });
-        res.send({ message: 'Categorie updated successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const category = await updateCategory({ ...req.params, ...req.body });
+        return res.status(200).json({
+            error: false,
+            message: "Category updated successfully!",
+            data: category
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const deleteCategoryController = async (req, res) => {
     try {
-
-        const categorieId = req.params.id;
-        const categorie = await deleteCategory({ categorieId });
-        res.send({ message: 'Categorie deleted successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const category = await deleteCategory(req.params.id);
+        return res.status(200).json({
+            error: false,
+            message: "Category delete successfully!",
+            data: category
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
-const fatchCategoryController = async (req, res) => {
+const fatchAllCategoryController = async (req, res) => {
     try {
-        const categorie = await fatchCategory();
-        console.log("display controller");
-
-        res.json(categorie);
-    } catch (err) {
+        const category = await fatchAllCategory();
+        return res.status(200).json({
+            error: false,
+            message: "All categories retrieved successfully!",
+            data: category
+        });
+    } catch (error) {
         res.json({ message: err.message });
     }
 };
 
 export {
-
-  createCategoryController,
-  getCategoryController,
-  updateCategoryController,
-  deleteCategoryController,
-  fatchCategoryController
+    createCategoryController,
+    getCategoryController,
+    updateCategoryController,
+    deleteCategoryController,
+    fatchAllCategoryController
 };

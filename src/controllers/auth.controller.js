@@ -4,8 +4,7 @@ import { generateRandomPassword } from '../utils/password.js';
 
 const createUserController = async (req, res) => {
     try {
-        const userBody = req.body;
-        const user = await createUser(userBody);
+        const user = await createUser(req.body);
         return res.status(200).json({
             error: false,
             message: 'User registered successfully!',
@@ -33,17 +32,17 @@ const loginUserController = async (req, res) => {
 const logoutUserController = (req, res) => {
     req.session.destroy(() => {
         res.clearCookie('connect.sid');
-        res.json({ message: 'Logged out successfully' });
+        return res.status(200).json({
+            error: false,
+            message: "Logged out successfully",
+            data: null,
+        });
     });
 };
 
 const getUserController = async (req, res) => {
     try {
-        const userId = req.user.id;
-        const user = await findUser(userId);
-        if (!user) {
-            return res.json({ message: 'User not found' });
-        }
+        const user = await findUser(req.user.id);
         return res.status(200).json({
             error: false,
             message: 'User get successfully!',
@@ -57,8 +56,7 @@ const getUserController = async (req, res) => {
 
 const updateUserController = async (req, res) => {
     try {
-        const userBody = req.body;
-        const updateResult = await updateUser({ id: req.user.id, ...userBody });
+        const updateResult = await updateUser({ id: req.user.id, ...req.body});
         res.status(200).json({
             error: false,
             message: "Update successful",
@@ -69,14 +67,18 @@ const updateUserController = async (req, res) => {
 
     }
 };
+
 const resetPasswordController = async (req, res) => {
     try {
-        const userId = req.user.id;
         if (!req.body.oldPassword || !req.body.newPassword) {
             return res.json({ message: 'Old password and new password are required' });
         }
-        const result = await resetUserPassword({ userId, ...req.body });
-        res.json({ message: result.message });
+        const resetPassword = await resetUserPassword({ userId: req.user.id , ...req.body });
+        res.status(200).json({
+            error: false,
+            message: "Reset password successful",
+            data: resetPassword
+        });
     } catch (error) {
         throw Error(error);
     }
@@ -84,17 +86,12 @@ const resetPasswordController = async (req, res) => {
 
 const forgotPasswordController = async (req, res) => {
     try {
-        const email = req.body.email;
-        if (!email) {
-            return res.status(400).json({ message: 'Email is required' });
-        }
         const newPassword = generateRandomPassword();
-        const user = await forgotUserPassword(email, newPassword);  // returns user if success
-        await sendEmail(newPassword, email);
+        const user = await forgotUserPassword(req.body.email, newPassword);  
+        await sendEmail(newPassword, req.body.email);
         res.json({
             status: 'success',
             message: 'Password sent to your email id',
-            timestamp: new Date().toISOString(),
             data: user
         });
 
@@ -102,6 +99,7 @@ const forgotPasswordController = async (req, res) => {
         throw Error(error);
     }
 };
+
 export {
     createUserController,
     loginUserController,

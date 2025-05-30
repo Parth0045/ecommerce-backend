@@ -7,50 +7,54 @@ import {
 } from '../services/cart.service.js';
 const createCartController = async (req, res) => {
     try {
-        const userId = req.user.id;
-        const productId = req.body.product_id;
-        const quantity = req.body.quantity;
-        console.log("from controller", productId);
-        console.log("from controller", quantity);
-        const carts = await createCart({ userId, productId, quantity });
-        res.json({ message: 'cart add successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const cart = await createCart({ buyer_id: req.user.id, ...req.body });
+        return res.status(200).json({
+            error: false,
+            message: "Cart create successfully!",
+            data: cart
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const getCartController = async (req, res) => {
     try {
-
-        const userId = req.user.id;
-        const cartItems = await getCart({ userId });
-        res.json(cartItems);
-    } catch (err) {
-        res.json({ message: err.message });
+        const cartItems = await getCart({ id: req.user.id });
+        return res.status(200).json({
+            error: false,
+            message: "Cart retrieved successfully!",
+            data: cartItems
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const updateCartController = async (req, res) => {
     try {
-        const userId = req.user.id;
-        const cartId = req.params.id;
-        const quantity = req.body.quantity;
-
-        const updatedCartItems = await updateCart({ cartId, quantity });
-        res.send({ message: 'Categorie updated successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const updatedCartItems = await updateCart({cartId: req.params.id, ...req.body });
+        return res.status(200).json({
+            error: false,
+            message: "Cart updated successfully!",
+            data: updatedCartItems
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const deleteCartController = async (req, res) => {
     try {
 
-        const cartId = req.params.id;
-        const categorie = await deleteCart({ cartId });
-        res.send({ message: 'cart deleted successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const deletedCart = await deleteCart( req.params.id );
+        return res.status(200).json({
+            error: false,
+            message: "Cart deleted successfully!",
+            data: deletedCart
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 

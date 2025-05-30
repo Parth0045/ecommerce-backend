@@ -1,33 +1,33 @@
 import wishlist from '../models/wishlist.js';
 import cart from '../models/wishlist.js';
 
-const createWishlist = async ({ userId, productId }) => {
-    const buyer_id = userId;
-    const product_id = productId;
+const createWishlist = async ({ buyer_id, ...wishlistBody }) => {
+  
     const wishlistItem = await wishlist.create({
         buyer_id,
-        product_id,
+        ...wishlistBody,
     });
     return wishlistItem;
 };
 
 const getWishlist = async (userId) => {
-    const buyer_id = userId.userId;
+    console.log(userId);
+    
     const wishlistItem = await wishlist.findAll({
         where: {
-            buyer_id: buyer_id,
+            buyer_id: userId,
         },
     });
     return wishlistItem;
 };
 
-const deleteWishlist = async ({ productId }) => {
-    const result = await wishlist.destroy({
+const deleteWishlist = async (productId) => {
+    const deleteWishlist = await wishlist.destroy({
         where: {
             product_id: productId,
         },
     });
-    return result;
+    return deleteWishlist;
 };
 export {
     createWishlist,
