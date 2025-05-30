@@ -72,11 +72,10 @@ const updateUserController = async (req, res) => {
 };
 const resetPasswordController = async (req, res) => {
     try {
-        const userId = req.user.id;
         if (!req.body.oldPassword || !req.body.newPassword) {
             return res.json({ message: 'Old password and new password are required' });
         }
-        const resetPassword = await resetUserPassword({ userId, ...req.body });
+        const resetPassword = await resetUserPassword({ userId: req.user.id , ...req.body });
         res.status(200).json({
             error: false,
             message: "Reset password successful",
@@ -90,7 +89,7 @@ const resetPasswordController = async (req, res) => {
 const forgotPasswordController = async (req, res) => {
     try {
         const newPassword = generateRandomPassword();
-        const user = await forgotUserPassword(req.body.email, newPassword);  // returns user if success
+        const user = await forgotUserPassword(req.body.email, newPassword);  
         await sendEmail(newPassword, req.body.email);
         res.json({
             status: 'success',
