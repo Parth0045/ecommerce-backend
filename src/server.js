@@ -9,6 +9,7 @@ import productsRoutes from './routes/product.routes.js';
 import cartRoutes from './routes/cart.routes.js';
 import wishlistRoutes from './routes/wishlist.routes.js';
 import orderRoutes from './routes/order.routes.js';
+import paymentRoutes from './routes/payment.routes.js';
 
 dotenv.config();
 dotenv.config({ path: '../.env' }); 
@@ -30,6 +31,7 @@ app.use('/api', productsRoutes);
 app.use('/api', cartRoutes );
 app.use('/api', wishlistRoutes );
 app.use('/api', orderRoutes );
+app.use('/api', paymentRoutes );
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not Found' });
