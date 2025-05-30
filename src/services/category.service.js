@@ -24,8 +24,6 @@ const updateCategory = async ({ id, category_name }) => {
 };
 
 const deleteCategory = async (deleteCategoryId) => {
-    console.log("Service ", deleteCategoryId);
-
     const deleteCategory = await categories.destroy({
         where: {
             id: deleteCategoryId,

@@ -2,10 +2,9 @@ import product from '../models/products.js';
 import categories from '../models/categories.js';
 import subCategories from '../models/subCategories.js';
 
-const createProduct = async ({ seller_id, category_id, subcategory_id, product_name, description, quantity, price }) => {
-    console.log(description);
+const createProduct = async ({ seller_id, ...productBody }) => {
     const createdProduct = await product.create({
-        seller_id, category_id, subcategory_id, product_name, description, quantity, price
+        seller_id, ...productBody
     });
     return createdProduct;
 };
@@ -39,15 +38,15 @@ const getProduct = async (userId) => {
 };
 
 const updateProduct = async ({ productId, ...updateProductRecords }) => {
-  
+
     const updatedProduct = await product.update({
         ...updateProductRecords
     }, { where: { id: productId } });
- 
-   return updatedProduct[0] > 0 ? true : false;
+
+    return updatedProduct[0] > 0 ? true : false;
 }
 
-const deleteProduct = async (productId) => {    
+const deleteProduct = async (productId) => {
     const deletedProduct = await product.destroy({
         where: {
             id: productId,

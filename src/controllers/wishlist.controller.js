@@ -6,38 +6,46 @@ import {
 
 const createWishlistController = async (req, res) => {
     try {
-        const userId = req.user.id;
-        const productId = req.body.product_id;
-        const wishlist = await createWishlist({ userId, productId });
-        res.json({ message: 'wishlist add successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const wishlist = await createWishlist({ buyer_id: req.user.id, ...req.body });
+        return res.status(200).json({
+            error: false,
+            message: "Wishlist create successfully!",
+            data: wishlist
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const getWishlistController = async (req, res) => {
     try {
-        const userId = req.user.id;
-        const wishlistItem = await getWishlist({ userId });
-        res.json(wishlistItem);
-    } catch (err) {
-        res.json({ message: err.message });
+        // const userId = req.user.id;
+        const wishlistItem = await getWishlist(req.user.id);
+        return res.status(200).json({
+            error: false,
+            message: "Wishlist retrived successfully!",
+            data: wishlistItem
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const deleteWishlistController = async (req, res) => {
     try {
-        const productId = req.params.productId;
-        console.log(productId);
-        const categorie = await deleteWishlist({ productId });
-        res.send({ message: 'wishlist deleted successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const deletedWishlist = deleteWishlist(req.params.productId);
+        return res.status(200).json({
+            error: false,
+            message: "Wishlist deleted successfully!",
+            data: deletedWishlist
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 export {
- getWishlistController,
- createWishlistController,
- deleteWishlistController
+    getWishlistController,
+    createWishlistController,
+    deleteWishlistController
 }

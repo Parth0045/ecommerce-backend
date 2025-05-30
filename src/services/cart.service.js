@@ -1,46 +1,38 @@
 import cart from '../models/cart.js';
 
-const createCart = async ({ userId, productId, quantity }) => {
-    const buyer_id = userId;
-    const product_id = productId;
-    const newCartItem = await cart.create({
+const createCart = async ({ buyer_id, ...cartItemBody }) => {
+    // const buyer_id = userId;
+    // const product_id = productId;
+    const cartItem = await cart.create({
         buyer_id,
-        product_id,
-        quantity,
+        ...cartItemBody
     });
-
-    return newCartItem;
-
-    
+    return cartItem;
 };
 
-const getCart = async (userId) => {
-    const buyer_id = userId.userId;
+const getCart = async ({ id }) => {
     const cartItems = await cart.findAll({
         where: {
-            buyer_id: buyer_id,
+            buyer_id: id,
         },
     });
-    console.log("hello");
     return cartItems;
 };
-const updateCart = async ({ userId, cartId, quantity }) => {
-    const result = await cart.update({ quantity: quantity }, { where: { id: cartId } });
-    const updated = result[0];
-    console.log(updated);
-    return updated;
+
+const updateCart = async ({ cartId, quantity }) => {
+    const updateCart = await cart.update({ quantity: quantity }, { where: { id: cartId } });
+    return updateCart[0] > 0 ? true : false;
 };
-const deleteCart = async ({ cartId }) => {
-    const result = await cart.destroy({
+
+const deleteCart = async (cartId) => {
+    console.log(cartId);
+    const deletedCart = await cart.destroy({
         where: {
             id: cartId,
         },
     });
-    console.log(result);
-    return result;
+    return deletedCart;
 };
-
-
 export {
     createCart,
     getCart,
