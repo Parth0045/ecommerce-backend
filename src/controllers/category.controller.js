@@ -11,7 +11,7 @@ const createCategoryController = async (req, res) => {
         const categories = await createCategory({ seller_id: req.user.id, ...req.body });
         return res.status(200).json({
             error: false,
-            message: 'Categories add successfully!',
+            message: 'Categories created successfully!',
             data: categories
         });
     } catch (err) {
@@ -41,7 +41,7 @@ const updateCategoryController = async (req, res) => {
             message: "Category updated successfully!",
             data: category
         });
-    } catch (err) {
+    } catch (error) {
         throw Error(error);
     }
 };
@@ -67,7 +67,7 @@ const fatchAllCategoryController = async (req, res) => {
             message: "All categories retrieved successfully!",
             data: category
         });
-    } catch (err) {
+    } catch (error) {
         res.json({ message: err.message });
     }
 };

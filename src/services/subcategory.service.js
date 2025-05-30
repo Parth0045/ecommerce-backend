@@ -1,47 +1,48 @@
 import subCategories from '../models/subCategories.js';
 
-const createSubCategory = async ({ category_id, seller_id, sub_category_name }) => {
-    const subCategorie = await subCategories.create({
+const createSubCategory = async ({ seller_id, category_id, sub_category_name }) => {
+    const subCategory = await subCategories.create({
         seller_id,
         category_id,
         sub_category_name,
     });
-    return subCategorie;
-};
-const getSubCategory = async (seller_id) => {
-    const sellerID = seller_id.seller_id;
-    const categories = await subCategories.findAll({
-        where: {
-            seller_id: sellerID,
-        },
-    });
-    // console.log(categories);
-    // console.log("hello");
-    return categories;
-};
-const updateSubCategory = async ({ seller_id, subCategorieId, updatedSubCategoryName }) => {
-    const sellerID = seller_id.seller_id;
-    console.log("Service ", updatedSubCategoryName);
-    console.log("Service ", subCategorieId);
-    const result = await subCategories.update({ sub_category_name: updatedSubCategoryName }, { where: { id: subCategorieId } });
-    console.log(result);
-    return result;
-};
-const deleteSubCategory = async ({ subCategorieId }) => {
-    console.log("Service ", subCategorieId);
-    const result = await subCategories.destroy({
-        where: {
-            id: subCategorieId,
-        },
-    });
-    console.log(result);
-    return result;
-};
-const fatchSubCategory = async () => {
-    const subCategory = await subCategories.findAll();
-    console.log(subCategory);
-    console.log("display cat service");
     return subCategory;
+};
+
+
+const getSubCategory = async (userId) => {
+    const subCategory = await subCategories.findAll({
+        where: {
+            seller_id: userId.id,
+        },
+    });
+    return subCategory;
+};
+
+const updateSubCategory = async ({ id, sub_category_name }) => {
+    console.log(id);
+    console.log(sub_category_name);
+    
+    const updatedSubCategory = await subCategories.update({ sub_category_name: sub_category_name }, { where: { id: id } });
+    return updatedSubCategory[0] > 0 ? true : false;
+};
+
+
+const deleteSubCategory = async ({ id }) => {
+    console.log("Service ", id);
+    const deleteSubCategory = await subCategories.destroy({
+        where: {
+            id: id,
+        },
+    });
+    return deleteSubCategory;
+};
+
+
+const fatchAllSubCategory = async () => {
+    const fatchAllCategories = await subCategories.findAll();
+
+    return fatchAllCategories;
 };
 
 export {
@@ -49,5 +50,5 @@ export {
     getSubCategory,
     updateSubCategory,
     deleteSubCategory,
-    fatchSubCategory
+    fatchAllSubCategory
 }

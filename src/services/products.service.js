@@ -4,11 +4,13 @@ import subCategories from '../models/subCategories.js';
 
 const createProduct = async ({ seller_id, category_id, subcategory_id, product_name, description, quantity, price }) => {
     console.log(description);
-    const categorie = await product.create({
+    const createdProduct = await product.create({
         seller_id, category_id, subcategory_id, product_name, description, quantity, price
     });
-    return categorie;
+    return createdProduct;
 };
+
+
 const uploadProductImage = async ({ product_id, image_url }) => {
     console.log("Updating product ID:", product_id);
     const result = await product.update(
@@ -20,47 +22,56 @@ const uploadProductImage = async ({ product_id, image_url }) => {
 };
 
 const getProduct = async (userId) => {
-  const products = await product.findAll({
-    where: { seller_id: userId },
-    include: [
-      {
-        model: categories,
-        as: 'category',
-        attributes: { exclude: ['deleted_at'] },
-      },
-      {
-        model: subCategories,
-        as: 'subCategory',
-        attributes: { exclude: ['deleted_at'] },
-      },
-    ],
-  });
-  return products;
+    const products = await product.findAll({
+        where: { seller_id: userId.id },
+        include: [
+            {
+                model: categories,
+                as: 'category',
+            },
+            {
+                model: subCategories,
+                as: 'subCategory',
+            },
+        ],
+    });
+    return products;
 };
 
-const updateProduct = async ({ productId, updatedCategoryId, updatedSubCategoryId, updatedProductName, updatedDescription, updatedPrice, updatedQuantity }) => {
-    console.log("Service ", updatedProductName);
-    console.log("Service ", updatedDescription);
-
-    const result = await product.update({
-        category_id: updatedCategoryId, subcategory_id: updatedSubCategoryId, product_name: updatedProductName, description: updatedDescription, price: updatedPrice, quantity: updatedQuantity
+const updateProduct = async ({ productId, ...updateProductRecords }) => {
+  
+    const updatedProduct = await product.update({
+        ...updateProductRecords
     }, { where: { id: productId } });
-    const updated = result[0];
-    console.log(updated);
-    return updated;
-};
-const deleteProduct = async ({ productId }) => {
-    console.log("Service ", productId);
-    const result = await product.destroy({
+ 
+   return updatedProduct[0] > 0 ? true : false;
+}
+
+const deleteProduct = async (productId) => {    
+    const deletedProduct = await product.destroy({
         where: {
             id: productId,
         },
     });
-    console.log(result);
-    return result;
+    return deletedProduct;
 };
-const fatchProducts = async () => {
-    const products = await product.findAll();
+
+
+const fatchAllProducts = async () => {
+    const products = await product.findAll({
+        include: [
+            {
+                model: categories,
+                as: 'category',
+                attributes: { exclude: ['deleted_at'] },
+            },
+            {
+                model: subCategories,
+                as: 'subCategory',
+                attributes: { exclude: ['deleted_at'] },
+            },
+        ],
+    });
     return products;
 };
 
@@ -72,5 +83,5 @@ export {
     getProduct,
     updateProduct,
     deleteProduct,
-    fatchProducts,
+    fatchAllProducts,
 }

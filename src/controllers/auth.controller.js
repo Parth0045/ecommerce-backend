@@ -70,6 +70,7 @@ const updateUserController = async (req, res) => {
 
     }
 };
+
 const resetPasswordController = async (req, res) => {
     try {
         if (!req.body.oldPassword || !req.body.newPassword) {
@@ -102,6 +103,7 @@ const forgotPasswordController = async (req, res) => {
         throw Error(error);
     }
 };
+
 export {
     createUserController,
     loginUserController,

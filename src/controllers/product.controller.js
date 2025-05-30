@@ -4,85 +4,86 @@ import {
     getProduct,
     updateProduct,
     deleteProduct,
-    fatchProducts
+    fatchAllProducts
 
 } from '../services/products.service.js';
 import { uploadFile } from '../utils/uploadImage.js';
 
 const createProductController = async (req, res) => {
     try {
-        const seller_id = req.user.id;
-        console.log("hello");
-        const category_id = req.body.category_id;
-        const subcategory_id = req.body.subcategory_id;
-        const product_name = req.body.product_name;
-        const description = req.body.description;
-        const quantity = req.body.quantity;
-        const price = req.body.price;
-        console.log(seller_id);
-        console.log(product_name);
-        console.log("from controller", description);
-        const categorie = await createProduct({ seller_id, category_id, subcategory_id, product_name, description, quantity, price });
-        res.json({ message: 'Product add successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const createdProduct = await createProduct({ seller_id: req.user.id, ...req.body });
+        return res.status(200).json({
+            error: false,
+            message: "Product Created successfully!",
+            data: createdProduct,
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
+
 const imageProductController = async (req, res) => {
     try {
-        const product_id = req.body.product_id;
         const file = req.file;
         if (!file) {
             return res.json({ message: "No image file uploaded" });
         }
         console.log("file.path:", file.path);
         const imageUrl = await uploadFile(file.path);
-        await uploadProductImage({ product_id, image_url: imageUrl });
-        res.json({ message: 'Product image added successfully', imageUrl });
-    } catch (err) {
-        res.json({ message: err.message });
+        await uploadProductImage({ ...req.body, image_url: imageUrl });
+        return res.status(200).json({
+            error: false,
+            message: "Product image added successfully!",
+            data: imageUrl,
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const getProductController = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const products = await getProduct(userId);
-    res.json({data: products,});
-  } catch (error) {
-    console.error('Error fetching products:', error);
-  }
+    try {
+        const products = await getProduct(req.user);
+        return res.status(200).json({
+            error: false,
+            message: "Product retrieved successfully!",
+            data: products,
+        });
+    } catch (error) {
+        throw Error(error);
+    }
 };
 
 const updateProductController = async (req, res) => {
     try {
-
-        const productId = req.params.id;
-        const updatedCategoryId = req.body.category_id;
-        const updatedSubCategoryId = req.body.subcategory_id;
-        const updatedProductName = req.body.product_name;
-        const updatedDescription = req.body.description;
-        const updatedPrice = req.body.price;
-        const updatedQuantity = req.body.quantity;
-        const categorie = await updateProduct({ productId, updatedCategoryId, updatedSubCategoryId, updatedProductName, updatedDescription, updatedPrice, updatedQuantity });
-        res.send({ message: 'Categorie updated successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const products = await updateProduct({ productId: req.params.id, ...req.body });
+        return res.status(200).json({
+            error: false,
+            message: "Product updated successfully!",
+            data: products,
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
+
 const deleteProductController = async (req, res) => {
     try {
+        console.log(req.params.id);
 
-        const productId = req.params.id;
-        const products = await deleteProduct({ productId });
-        res.send({ message: 'Product deleted successfully' });
-    } catch (err) {
-        res.json({ message: err.message });
+        const deletedProduct = await deleteProduct(req.params.id);
+        return res.status(200).json({
+            error: false,
+            message: "Product deleted successfully!",
+            data: deletedProduct,
+        });
+    } catch (error) {
+        throw Error(error);
     }
 };
-const fatchProductController = async (req, res) => {
+const fatchAllProductController = async (req, res) => {
     try {
-        const products = await fatchProducts();
+        const products = await fatchAllProducts();
         res.json(products);
     } catch (err) {
         res.json({ message: err.message });
@@ -95,5 +96,5 @@ export {
     getProductController,
     updateProductController,
     deleteProductController,
-    fatchProductController
+    fatchAllProductController
 }
