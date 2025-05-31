@@ -50,7 +50,7 @@ const users = sequelize.define('User', {
   },
 }, {
   tableName: 'users',
-  timestamps: false,
+  timestamps: true,
   paranoid: true,
   underscored: true,
   hooks: {

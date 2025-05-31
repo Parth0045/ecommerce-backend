@@ -65,8 +65,8 @@ const product = sequelize.define('Product', {
   },
 }, {
   tableName: 'products',
-  timestamps: false,
-  paranoid: false,
+  timestamps: true,
+  paranoid: true,
 });
 
 product.belongsTo(categories, {

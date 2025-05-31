@@ -42,7 +42,7 @@ const order = sequelize.define('order', {
     },
 }, {
     tableName: 'orders',
-    timestamps: false,
+    timestamps: true,
     underscored: true,
 });
 order.hasMany(orderItems, { foreignKey: 'order_id' });
