@@ -9,23 +9,23 @@ const review = sequelize.define('review', {
     },
     order_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     product_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     seller_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     buyer_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     rating: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         validate: {
             min: 1,
             max: 5,

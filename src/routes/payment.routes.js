@@ -11,12 +11,9 @@ import { userAuthMiddleware } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-// SELLER
 router.get('/seller/payments',userAuthMiddleware,getSellerPaymentsController);
 router.get('/seller/payments/:orderId',userAuthMiddleware, getSellerPaymentByOrderController);
 router.get('/seller/earnings', userAuthMiddleware,getSellerEarningsController);
-
-// BUYER
 router.post('/buyer/payments/checkout', userAuthMiddleware,checkoutPaymentController);
 router.post('/buyer/payments/verify',userAuthMiddleware, verifyPaymentController);
 router.get('/buyer/payments/status/:orderId',userAuthMiddleware, getPaymentStatusController);

@@ -1,6 +1,12 @@
 import express from 'express';
 import { userAuthMiddleware } from '../middlewares/auth.middleware.js';
-import{ createCategoryController, getCategoryController, updateCategoryController, deleteCategoryController, fatchAllCategoryController } from '../controllers/category.controller.js';
+import {
+    createCategoryController,
+    getCategoryController,
+    updateCategoryController,
+    deleteCategoryController,
+    fatchAllCategoryController
+} from '../controllers/category.controller.js';
 
 const router = express.Router();
 

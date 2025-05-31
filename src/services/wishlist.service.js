@@ -1,5 +1,4 @@
 import wishlist from '../models/wishlist.js';
-import cart from '../models/wishlist.js';
 
 const createWishlist = async ({ buyer_id, ...wishlistBody }) => {
   
