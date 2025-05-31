@@ -1,14 +1,13 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/dbConnect.js';
-import orderItems from './orderItem.js';
 
-const order = sequelize.define('order', {
+const payment = sequelize.define('payment', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
-    seller_id: {
+    order_id: {
         type: DataTypes.UUID,
         allowNull: true,
     },
@@ -16,21 +15,30 @@ const order = sequelize.define('order', {
         type: DataTypes.UUID,
         allowNull: true,
     },
-    order_date: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+    seller_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
     },
-    status: {
-        type: DataTypes.STRING,
-        defaultValue: 'Pending',
-    },
-    total_amount: {
+    amount: {
         type: DataTypes.DECIMAL(12, 2),
         allowNull: true,
     },
-    delivery_address: {
-        type: DataTypes.TEXT,
-        allowNull: true ,
+    payment_method: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+    },
+    payment_status: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+        defaultValue: 'pending',
+    },
+    transaction_id: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+    },
+    paid_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
     },
     created_at: {
         type: DataTypes.DATE,
@@ -41,11 +49,9 @@ const order = sequelize.define('order', {
         defaultValue: DataTypes.NOW,
     },
 }, {
-    tableName: 'orders',
+    tableName: 'payments',
     timestamps: false,
     underscored: true,
 });
-order.hasMany(orderItems, { foreignKey: 'order_id' });
-orderItems.belongsTo(order, { foreignKey: 'order_id' });
 
-export default order;
+export default payment;

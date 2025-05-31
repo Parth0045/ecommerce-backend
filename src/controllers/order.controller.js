@@ -10,8 +10,6 @@ import {
     updateBuyerOrderAddress,
     calculateOrderDetails,
     deleteOrderItem
-
-
 } from '../services/order.service.js';
 
 const createBuyerOrderController = async (req, res) => {
@@ -31,86 +29,119 @@ const createBuyerOrderController = async (req, res) => {
 
 const getBuyerOrdersController = async (req, res) => {
     try {
-        const buyerId = req.user.id;
-        const orders = await getBuyerOrders(buyerId);
-        res.json(orders);
-    } catch (err) {
-        res.json({ error: err.message });
+        const orders = await getBuyerOrders({buyerId: req.user.id});
+        return res.status(200).json({
+            error: false,
+            message: 'Order retrived successfully!',
+            data: orders
+        }); 
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const getBuyerOrderByIdController = async (req, res) => {
     try {
-        const orderId = req.params.id;
-        const order = await getBuyerOrderById(orderId);
-        res.json(order);
-    } catch (err) {
-        res.json({ error: err.message });
+        const order = await getBuyerOrderById(req.params.id);
+        return res.status(200).json({
+            error: false,
+            message: 'Order retrived by id successfully!',
+            data: order
+        }); 
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const cancelBuyerOrderController = async (req, res) => {
     try {
-        const orderId = req.params.id;
-        const result = await cancelBuyerOrder(orderId);
-        const deleteWithOrderItem = await deleteOrderItem(orderId);
-        res.json({ message: 'Order cancellation requested', result });
-    } catch (err) {
-        res.json({ error: err.message });
+        // const orderId = req.params.id;
+        const cancleOrder = await cancelBuyerOrder(req.params.id);
+        const deleteWithOrderItem = await deleteOrderItem(req.params.id);
+        return res.status(200).json({
+            error: false,
+            message: 'Order deleted successfully!',
+            data: cancleOrder,deleteWithOrderItem
+        }); 
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const updateBuyerOrderAddressController = async (req, res) => {
     try {
-        const orderId = req.params.id;
-        const delivery_address = req.body.delivery_address;
-        const result = await updateBuyerOrderAddress(orderId, delivery_address);
-        res.json({ message: 'Delivery address updated', result });
-    } catch (err) {
-        res.json({ error: err.message });
+        const updateAddress = await updateBuyerOrderAddress({
+            id: req.params.id,
+            ...req.body
+        });
+
+        return res.status(200).json({
+            error: false,
+            message: 'Order address updated successfully!',
+            data: updateAddress
+        });
+
+    } catch (error) {
+        throw Error(error);
     }
 };
 
+
 const getSellerOrdersController = async (req, res) => {
     try {
-        const sellerId = req.user.id;
-        const ordersWithItems = await getSellerOrders(sellerId);
+        const ordersWithItems = await getSellerOrders({sellerId: req.user.id});
+            return res.status(200).json({
+            error: false,
+            message: 'Order retrived successfully!',
+            data: ordersWithItems
+        });
 
-        res.json({ orders: ordersWithItems });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 
 const getSellerOrderByIdController = async (req, res) => {
     try {
-        const orderId = req.params.id;
-        const order = await getSellerOrderById(orderId);
-        res.json(order);
-    } catch (err) {
-        res.json({ error: err.message });
+        // const orderId = req.params.id;
+        const order = await getSellerOrderById({orderId:req.params.id});
+            return res.status(200).json({
+            error: false,
+            message: 'Order retrived by id successfully!',
+            data: order
+        });
+
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const updateOrderStatusController = async (req, res) => {
     try {
-        const orderId = req.params.id;
-        const status = req.body.status;
-        const result = await updateOrderStatus(orderId, status);
-        res.json({ message: 'Order status updated', result });
-    } catch (err) {
-        res.json({ error: err.message });
+        const updatedOrderStatus = await updateOrderStatus(req.params.id, req.body.status);
+            return res.status(200).json({
+            error: false,
+            message: 'Order status updated successfully!',
+            data: updatedOrderStatus
+        });
+
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const acceptOrderAndSendEmailController = async (req, res) => {
     try {
-        const orderId = req.params.orderId;
-        const result = await acceptOrderAndSendEmail(orderId);
-        res.json({ message: 'Order accepted and email sent', result });
-    } catch (err) {
-        res.json({ error: err.message });
+        const result = await acceptOrderAndSendEmail(req.params.orderId);
+        return res.status(200).json({
+            error: false,
+            message: 'Order accepted and send mail successfully!',
+            data: result
+        });
+
+    } catch (error) {
+        throw Error(error);
     }
 };
 

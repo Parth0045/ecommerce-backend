@@ -2,13 +2,8 @@ import express from 'express';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import sequelize from './config/dbConnect.js';
-import authRoutes from './routes/auth.routes.js';
-import categoriesRoutes from './routes/category.routes.js';
-import subCategoriesRoutes from './routes/subcategory.routes.js';
-import productsRoutes from './routes/product.routes.js';
-import cartRoutes from './routes/cart.routes.js';
-import wishlistRoutes from './routes/wishlist.routes.js';
-import orderRoutes from './routes/order.routes.js';
+
+import indexRoutes from './routes/index.js';
 
 dotenv.config();
 dotenv.config({ path: '../.env' }); 
@@ -23,14 +18,7 @@ app.use(session({
   cookie: { secure: false, httpOnly: true },
 }));
 
-app.use('/api/auth', authRoutes);
-app.use('/api', categoriesRoutes);
-app.use('/api', subCategoriesRoutes);
-app.use('/api', productsRoutes);
-app.use('/api', cartRoutes );
-app.use('/api', wishlistRoutes );
-app.use('/api', orderRoutes );
-
+app.use(indexRoutes);
 app.use((req, res) => {
   res.status(404).json({ message: 'Not Found' });
 });

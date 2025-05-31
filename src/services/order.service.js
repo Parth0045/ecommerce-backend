@@ -46,7 +46,7 @@ const createOrder = async ({ buyer_id, products, ...orderBody }) => {
     }
 };
 
-const getBuyerOrders = async (buyerId) => {
+const getBuyerOrders = async ({buyerId}) => {
     const orders = await order.findAll({ where: { buyer_id: buyerId } });
     return orders;
 };
@@ -63,27 +63,37 @@ const cancelBuyerOrder = async (orderId) => {
     return updatedOrder;
 };
 
-const updateBuyerOrderAddress = async (orderId, delivery_address) => {
-    const orders = await order.findByPk(orderId);
-    orders.delivery_address = delivery_address;
+const updateBuyerOrderAddress = async ({ id, ...body }) => {
+    const orders = await order.findByPk(id);
+    orders.delivery_address = body.delivery_address;
     await orders.save();
     return orders;
 };
 
-const getSellerOrders = async (sellerId) => {
-    const orders = await order.findAll({ where: { seller_id: sellerId } });
-    const ordersWithItems = [];
-    for (const singleOrder of orders) {
-        const orderItemsData = await orderItems.findAll({ where: { order_id: singleOrder.id } });
-        ordersWithItems.push({ ...singleOrder.dataValues, items: orderItemsData });
-    }
+
+const getSellerOrders = async ({sellerId}) => {
+    const ordersWithItems = await order.findAll({
+        where: { seller_id: sellerId },
+        include: [
+            {
+                model: orderItems,
+            }
+        ]
+    });
     return ordersWithItems;
 };
 
-const getSellerOrderById = async (orderId) => {
-    const orderData = await order.findByPk(orderId);
+const getSellerOrderById = async ({orderId}) => {
+    const orderData = await order.findByPk(orderId, {
+        include: [
+            {
+                model: orderItems,
+            }
+        ]
+    });
     return orderData;
 };
+
 
 const updateOrderStatus = async (orderId, status) => {
     const orders = await order.findByPk(orderId);
@@ -113,14 +123,12 @@ const calculateOrderDetails = async (products) => {
     return { seller_id, total_amount };
 };
 
-
 const deleteOrderItem = async (orderId) => {
     const result = await orderItems.destroy({
         where: {
             order_id: orderId,
         },
     });
-    console.log(result);
     return result;
 };
 
