@@ -1,4 +1,10 @@
-import { createSubCategory, getSubCategory, updateSubCategory, deleteSubCategory, fatchAllSubCategory } from '../services/subcategory.service.js';
+import {
+    createSubCategory,
+    getSubCategory,
+    updateSubCategory,
+    deleteSubCategory,
+    fatchAllSubCategory
+} from '../services/subcategory.service.js';
 
 const createSubCategoryController = async (req, res) => {
     try {
@@ -8,8 +14,8 @@ const createSubCategoryController = async (req, res) => {
             message: "Subcategory created successfully",
             data: subCategory,
         });
-    }  catch (error) {
-         throw Error(error);
+    } catch (error) {
+        throw Error(error);
     }
 };
 
@@ -21,26 +27,26 @@ const getSubCategoryController = async (req, res) => {
             message: "Subcategory retrieved successfully",
             data: subCategories,
         });
-    }  catch (error) {
-     throw Error(error);
+    } catch (error) {
+        throw Error(error);
     }
 };
 
 const updateSubCategoryController = async (req, res) => {
     try {
-        const updatedSubCategory = await updateSubCategory({...req.params,...req.body });
+        const updatedSubCategory = await updateSubCategory({ ...req.params, ...req.body });
         return res.status(200).json({
             error: false,
             message: "Subcategory updated successfully",
             data: updatedSubCategory,
         });
-    }  catch (error) {
+    } catch (error) {
         throw Error(error);
     }
 };
 const deleteSubCategoryController = async (req, res) => {
     try {
-        const deletedSubCategory = await deleteSubCategory( req.params );
+        const deletedSubCategory = await deleteSubCategory(req.params);
         return res.status(200).json({
             error: false,
             message: "Subcategory deleted successfully",

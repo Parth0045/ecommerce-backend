@@ -1,6 +1,12 @@
 import express from 'express';
 import { userAuthMiddleware } from '../middlewares/auth.middleware.js';
-import { createSubCategoryController, getSubCategoryController, updateSubCategoryController, deleteSubCategoryController, fatchAllSubCategoryController } from '../controllers/subcategory.controller.js';
+import {
+    createSubCategoryController,
+    getSubCategoryController,
+    updateSubCategoryController,
+    deleteSubCategoryController,
+    fatchAllSubCategoryController
+} from '../controllers/subcategory.controller.js';
 
 const router = express.Router();
 router.get('/seller/subcategories', userAuthMiddleware, getSubCategoryController);

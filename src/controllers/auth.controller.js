@@ -1,4 +1,11 @@
-import { createUser, loginUser, findUser, updateUser, resetUserPassword, forgotUserPassword } from '../services/auth.service.js';
+import {
+    createUser,
+    loginUser,
+    findUser,
+    updateUser,
+    resetUserPassword,
+    forgotUserPassword
+} from '../services/auth.service.js';
 import { sendEmail } from '../utils/emailService.js';
 import { generateRandomPassword } from '../utils/password.js';
 
@@ -56,7 +63,7 @@ const getUserController = async (req, res) => {
 
 const updateUserController = async (req, res) => {
     try {
-        const updateResult = await updateUser({ id: req.user.id, ...req.body});
+        const updateResult = await updateUser({ id: req.user.id, ...req.body });
         res.status(200).json({
             error: false,
             message: "Update successful",
@@ -73,7 +80,7 @@ const resetPasswordController = async (req, res) => {
         if (!req.body.oldPassword || !req.body.newPassword) {
             return res.json({ message: 'Old password and new password are required' });
         }
-        const resetPassword = await resetUserPassword({ userId: req.user.id , ...req.body });
+        const resetPassword = await resetUserPassword({ userId: req.user.id, ...req.body });
         res.status(200).json({
             error: false,
             message: "Reset password successful",
@@ -87,7 +94,7 @@ const resetPasswordController = async (req, res) => {
 const forgotPasswordController = async (req, res) => {
     try {
         const newPassword = generateRandomPassword();
-        const user = await forgotUserPassword(req.body.email, newPassword);  
+        const user = await forgotUserPassword(req.body.email, newPassword);
         await sendEmail(newPassword, req.body.email);
         res.json({
             status: 'success',
