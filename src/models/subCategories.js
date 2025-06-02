@@ -36,7 +36,7 @@ const subCategories = sequelize.define('subcategory', {
   },
 }, {
   tableName: 'sub_categories',
-  timestamps: false,
+  timestamps: true,
   paranoid: true,
   underscored: true,
 });

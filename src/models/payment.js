@@ -50,7 +50,7 @@ const payment = sequelize.define('payment', {
     },
 }, {
     tableName: 'payments',
-    timestamps: false,
+    timestamps: true,
     underscored: true,
 });
 
