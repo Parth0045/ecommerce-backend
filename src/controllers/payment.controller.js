@@ -84,6 +84,7 @@ const getPaymentStatusController = async (req, res) => {
         throw Error(error);
     }
 };
+
 export {
     getSellerPaymentsController,
     getSellerPaymentByOrderController,

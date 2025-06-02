@@ -44,6 +44,7 @@ const updateSubCategoryController = async (req, res) => {
         throw Error(error);
     }
 };
+
 const deleteSubCategoryController = async (req, res) => {
     try {
         const deletedSubCategory = await deleteSubCategory(req.params);
@@ -71,7 +72,6 @@ const fatchAllSubCategoryController = async (req, res) => {
         throw Error(error);
     }
 };
-
 
 export {
     createSubCategoryController,

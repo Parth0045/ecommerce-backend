@@ -4,7 +4,6 @@ const createReview = async (reviewData) => {
     return await review.create({ ...reviewData });
 };
 
-
 const getSellerReviews = async ({ seller_id }) => {
   return await review.findAll({
     where: {

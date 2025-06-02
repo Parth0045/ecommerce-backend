@@ -8,6 +8,7 @@ const uploadFile = async (filePath) => {
         console.error("Error uploading file to Cloudinary:");
     }
 };
+
 export {
     uploadFile
 }

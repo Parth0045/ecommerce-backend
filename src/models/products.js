@@ -32,16 +32,12 @@ const product = sequelize.define('Product', {
   price: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: true,
-    validate: {
-      min: 0,
-    },
+    validate: { min: 0 },
   },
   quantity: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    validate: {
-      min: 0,
-    },
+    validate: { min: 0 },
   },
   image_url: {
     type: DataTypes.TEXT,
@@ -51,22 +47,11 @@ const product = sequelize.define('Product', {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
   },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-  updated_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-  deleted_at: {
-    type: DataTypes.DATE,
-    allowNull: true,
-  },
 }, {
   tableName: 'products',
   timestamps: true,
   paranoid: true,
+  underscored: true, // 🔧 This maps createdAt → created_at, etc.
 });
 
 product.belongsTo(categories, {

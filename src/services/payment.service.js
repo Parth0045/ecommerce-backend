@@ -3,9 +3,11 @@ import payment from '../models/payment.js';
 const getSellerPayments = async (sellerId) => {
     return await payment.findAll({ where: { seller_id: sellerId } });
 };
+
 const getSellerPaymentByOrderId = async (sellerId, orderId) => {
     return await payment.findOne({ where: { seller_id: sellerId, order_id: orderId } });
 };
+
 const getSellerEarnings = async (sellerId) => {
     const payments = await payment.findAll({
         where: {
@@ -25,6 +27,7 @@ const getSellerEarnings = async (sellerId) => {
 
     return result;
 };
+
 const checkoutPayment = async (buyerId, payload) => {
     const newPayment = await payment.create({
         buyer_id: buyerId,
@@ -33,6 +36,7 @@ const checkoutPayment = async (buyerId, payload) => {
     });
     return newPayment;
 };
+
 const verifyPayment = async ({ transaction_id, status }) => {
     const updated = await payment.update(
         { payment_status: status },
@@ -40,6 +44,7 @@ const verifyPayment = async ({ transaction_id, status }) => {
     );
     return updated[0] > 0;
 };
+
 const getPaymentStatus = async (buyerId, orderId) => {
     return await payment.findOne({
         where: {

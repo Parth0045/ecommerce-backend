@@ -47,8 +47,19 @@ const createOrder = async ({ buyer_id, products, ...orderBody }) => {
 };
 
 const getBuyerOrders = async ({buyerId}) => {
-    const orders = await order.findAll({ where: { buyer_id: buyerId } });
-    return orders;
+    // const orders = await order.findAll({ where: { buyer_id: buyerId } });
+    // return orders;
+
+        const ordersWithItems = await order.findAll({
+        where: { buyer_id: buyerId },
+        include: [
+            {
+                model: orderItems,
+            }
+        ]
+    });
+    return ordersWithItems;
+
 };
 
 const getBuyerOrderById = async (orderId) => {
@@ -69,7 +80,6 @@ const updateBuyerOrderAddress = async ({ id, ...body }) => {
     await orders.save();
     return orders;
 };
-
 
 const getSellerOrders = async ({sellerId}) => {
     const ordersWithItems = await order.findAll({
@@ -93,7 +103,6 @@ const getSellerOrderById = async ({orderId}) => {
     });
     return orderData;
 };
-
 
 const updateOrderStatus = async (orderId, status) => {
     const orders = await order.findByPk(orderId);

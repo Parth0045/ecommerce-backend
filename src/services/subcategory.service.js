@@ -8,7 +8,6 @@ const createSubCategory = async ({ seller_id, ...subCategoryBody }) => {
     return subCategory;
 };
 
-
 const getSubCategory = async (userId) => {
     const subCategory = await subCategories.findAll({
         where: {
@@ -26,7 +25,6 @@ const updateSubCategory = async ({ id, sub_category_name }) => {
     return updatedSubCategory[0] > 0 ? true : false;
 };
 
-
 const deleteSubCategory = async ({ id }) => {
     console.log("Service ", id);
     const deleteSubCategory = await subCategories.destroy({
@@ -36,7 +34,6 @@ const deleteSubCategory = async ({ id }) => {
     });
     return deleteSubCategory;
 };
-
 
 const fatchAllSubCategory = async () => {
     const fatchAllCategories = await subCategories.findAll();

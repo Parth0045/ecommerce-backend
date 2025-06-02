@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
 dotenv.config({path: '../.env'});
+
 const sendEmail = async (newPassword, email) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -26,7 +27,6 @@ const sendEmail = async (newPassword, email) => {
     throw error;
   }
 };
-
 
 export{
   sendEmail

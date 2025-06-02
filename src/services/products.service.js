@@ -9,7 +9,6 @@ const createProduct = async ({ seller_id, ...productBody }) => {
     return createdProduct;
 };
 
-
 const uploadProductImage = async ({ product_id, image_url }) => {
     console.log("Updating product ID:", product_id);
     const result = await product.update(
@@ -55,7 +54,6 @@ const deleteProduct = async (productId) => {
     return deletedProduct;
 };
 
-
 const fatchAllProducts = async () => {
     const products = await product.findAll({
         include: [
@@ -73,8 +71,6 @@ const fatchAllProducts = async () => {
     });
     return products;
 };
-
-
 
 export {
     createProduct,

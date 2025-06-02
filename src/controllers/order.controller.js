@@ -86,7 +86,6 @@ const updateBuyerOrderAddressController = async (req, res) => {
     }
 };
 
-
 const getSellerOrdersController = async (req, res) => {
     try {
         const ordersWithItems = await getSellerOrders({sellerId: req.user.id});
@@ -100,7 +99,6 @@ const getSellerOrdersController = async (req, res) => {
         throw Error(error);
     }
 };
-
 
 const getSellerOrderByIdController = async (req, res) => {
     try {

@@ -81,6 +81,7 @@ const deleteProductController = async (req, res) => {
         throw Error(error);
     }
 };
+
 const fatchAllProductController = async (req, res) => {
     try {
         const products = await fatchAllProducts();

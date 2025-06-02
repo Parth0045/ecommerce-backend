@@ -33,7 +33,6 @@ const loginUser = async ({ email, password }) => {
 
 };
 
-
 const findUser = async (userId) => {
     return await users.findByPk(userId);
 };
@@ -45,7 +44,6 @@ const updateUser = async ({ id, ...userBody }) => {
     );
     return result[0] > 0 ? true : false;
 };
-
 
 const resetUserPassword = async ({ userId, oldPassword, newPassword }) => {
     const user = await users.findByPk(userId);
