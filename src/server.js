@@ -3,11 +3,13 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 import sequelize from './config/dbConnect.js';
 import indexRoutes from './routes/index.js';
+import cors from 'cors';
 
 dotenv.config();
 dotenv.config({ path: '../.env' }); 
 
 const app = express();
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 app.use(express.json());
 
