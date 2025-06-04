@@ -12,6 +12,7 @@ import {
 
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
+
 router.get('/seller/products', userAuthMiddleware, getProductController);
 router.post('/seller/products', userAuthMiddleware, createProductController);
 router.post('/seller/products/image', userAuthMiddleware, upload.single('image'), imageProductController);

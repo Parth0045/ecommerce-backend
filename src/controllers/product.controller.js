@@ -7,6 +7,8 @@ import {
     fatchAllProducts
 
 } from '../services/products.service.js';
+import fs from 'fs/promises';
+import path from 'path';
 import { uploadFile } from '../utils/uploadImage.js';
 
 const createProductController = async (req, res) => {
@@ -31,6 +33,13 @@ const imageProductController = async (req, res) => {
         console.log("file.path:", file.path);
         const imageUrl = await uploadFile(file.path);
         await uploadProductImage({ ...req.body, image_url: imageUrl });
+        const result = await uploadProductImage({ ...req.body, image_url: imageUrl });
+
+        if (result) {
+            const filePath = path.join(process.cwd(), 'uploads', file.filename);
+            await fs.unlink(filePath);
+            console.log(`Deleted uploaded file: ${filePath}`);
+        }
         return res.status(200).json({
             error: false,
             message: "Product image added successfully!",
