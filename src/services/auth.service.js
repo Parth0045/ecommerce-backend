@@ -9,15 +9,19 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
 
 
 const createUser = async (userBody) => {
+  
     const { email } = userBody;
     const existingUser = await users.findOne({ where: { email } });
+  
     if (existingUser) {
         throw new Error('Email already in use');
     }
+   
     return await users.create({ ...userBody });
 };
 
 const loginUser = async ({ email, password }) => {
+   
     const user = await users.findOne({ where: { email, is_active: true } });
     
     if (!user || !(await user.validPassword(password))) {
@@ -29,46 +33,23 @@ const loginUser = async ({ email, password }) => {
         JWT_SECRET,
         { expiresIn: JWT_EXPIRES_IN }
     );
+    
     return { token, user };
 
 };
 
-const findUser = async (userId) => {
-    return await users.findByPk(userId);
-};
-
-const updateUser = async ({ id, ...userBody }) => {
-    const result = await users.update(
-        { ...userBody },
-        { where: { id } }
-    );
-    return result[0] > 0 ? true : false;
-};
-
-const resetUserPassword = async ({ userId, oldPassword, newPassword }) => {
-    const user = await users.findByPk(userId);
-    const isValid = await user.validPassword(oldPassword);
-    if (!isValid) {
-        return { message: 'Old password is incorrect' };
-    }
-    user.password_hash = newPassword;
-    await user.save();
-    return user;
-};
-
 const forgotUserPassword = async (email, newPassword) => {
+   
     const user = await users.findOne({ where: { email } });
+   
     user.password_hash = newPassword;
-    await user.save();
+   
+    await user.save();   
     return user;
 };
 
 export {
     createUser,
     loginUser,
-    findUser,
-    updateUser,
-    resetUserPassword,
-    forgotUserPassword,
-
+    forgotUserPassword
 };

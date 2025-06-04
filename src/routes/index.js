@@ -9,10 +9,12 @@ import wishlistRoutes from './wishlist.routes.js';
 import orderRoutes from './order.routes.js';
 import paymentRoutes from './payment.routes.js';
 import reviewRoutes from './review.route.js';
+import userRoutes from './user.route.js';
 
 const router = Router();
 
 router.use('/api/auth', authRoutes);
+router.use('/api', userRoutes);
 router.use('/api', categoriesRoutes);
 router.use('/api', subCategoriesRoutes);
 router.use('/api', productsRoutes);
