@@ -69,7 +69,6 @@ const resetPasswordController = async (req, res) => {
     }
 };
 
-
 export {
     getUserController,
     resetPasswordController,

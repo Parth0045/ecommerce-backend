@@ -27,5 +27,4 @@ router.post('/buyer/wishlist', userAuthMiddleware, createWishlistController);
 router.get('/buyer/wishlist', userAuthMiddleware, getWishlistController);
 router.delete('/buyer/wishlist/:productId', userAuthMiddleware, deleteWishlistController);
 
-
 export default router;

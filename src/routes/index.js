@@ -1,5 +1,4 @@
 import { Router } from 'express';
-
 import authRoutes from './auth.routes.js';
 import categoriesRoutes from './category.routes.js';
 import productsRoutes from './product.routes.js';
@@ -19,6 +18,5 @@ router.use(cartRoutes);
 router.use(orderRoutes);
 router.use(paymentRoutes);
 router.use(reviewRoutes);
-
 
 export default router;

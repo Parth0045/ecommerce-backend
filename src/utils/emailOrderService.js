@@ -18,6 +18,7 @@ const sendOrderAcceptedEmail = async (toEmail, orderId) => {
         subject: `Your order form ecommerce has been accepted`,
         text: `Hello,\n\nYour order with ID ${orderId} has been accepted.\n\nThank you for shopping with us!`,
     };
+ 
     await transporter.sendMail(mailOptions);
 };
 
