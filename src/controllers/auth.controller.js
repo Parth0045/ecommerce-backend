@@ -47,12 +47,17 @@ const loginUserController = async (req, res) => {
 };
 
 const logoutUserController = (req, res) => {
-
+        
     req.session.destroy(() => {
-
+    
         res.clearCookie('connect.sid');
-
-        return res.status(200).json();
+    
+        return res.status(200).json({
+            error: false,
+            message: "Logged out successfully",
+            data: null,
+        });
+    
     });
 };
 

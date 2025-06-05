@@ -11,11 +11,11 @@ const createCategory = async ({ seller_id, category_name }) => {
     return category;
 };
 
-const getCategory = async (id) => {
-  
+const getCategory = async ({seller_id}) => {
+    
     const category = await categories.findAll({
         where: {
-            seller_id: id.id,
+            seller_id,
         },
     });
   

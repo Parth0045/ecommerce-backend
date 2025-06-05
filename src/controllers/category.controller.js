@@ -15,7 +15,7 @@ const createCategoryController = async (req, res) => {
    
     try {
    
-        const categories = await createCategory({ seller_id: req.user.id, ...req.body });
+        const categories = await createCategory({ seller_id: req.user.id});
    
         return res.status(200).json({
             error: false,
@@ -34,7 +34,7 @@ const getCategoryController = async (req, res) => {
    
     try {
 
-        const categories = await getCategory({ ...req.user });
+        const categories = await getCategory({ seller_id: req.user.id });
    
         return res.status(200).json({
             error: false,
@@ -42,7 +42,7 @@ const getCategoryController = async (req, res) => {
             data: categories
         });
    
-    } catch (err) {
+    } catch (error) {
    
         throw Error(error);
    
