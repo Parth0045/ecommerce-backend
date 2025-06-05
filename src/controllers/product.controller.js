@@ -4,8 +4,10 @@ import {
     getProduct,
     updateProduct,
     deleteProduct,
-    fatchAllProducts
-
+    fatchAllProducts,
+    createWishlist,
+    deleteWishlist,
+    getWishlist
 } from '../services/products.service.js';
 import fs from 'fs/promises';
 import path from 'path';
@@ -100,11 +102,55 @@ const fatchAllProductController = async (req, res) => {
     }
 };
 
+
+const createWishlistController = async (req, res) => {
+    try {
+        const wishlist = await createWishlist({ buyer_id: req.user.id, ...req.body });
+        return res.status(200).json({
+            error: false,
+            message: "Wishlist create successfully!",
+            data: wishlist
+        });
+    } catch (error) {
+        throw Error(error);
+    }
+};
+
+const getWishlistController = async (req, res) => {
+    try {
+        // const userId = req.user.id;
+        const wishlistItem = await getWishlist(req.user.id);
+        return res.status(200).json({
+            error: false,
+            message: "Wishlist retrived successfully!",
+            data: wishlistItem
+        });
+    } catch (error) {
+        throw Error(error);
+    }
+};
+
+const deleteWishlistController = async (req, res) => {
+    try {
+        const isDeleted = await deleteWishlist(req.params.productId);
+        return res.status(200).json({
+            error: false,
+            message: "Wishlist deleted successfully!",
+            data: isDeleted
+        });
+    } catch (error) {
+        throw Error(error);
+    }
+};
+
 export {
     createProductController,
     imageProductController,
     getProductController,
     updateProductController,
     deleteProductController,
-    fatchAllProductController
+    fatchAllProductController,
+    getWishlistController,
+    createWishlistController,
+    deleteWishlistController
 }

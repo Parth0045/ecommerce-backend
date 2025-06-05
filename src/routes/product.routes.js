@@ -7,7 +7,10 @@ import {
     getProductController,
     updateProductController,
     deleteProductController,
-    fatchAllProductController
+    fatchAllProductController,
+     getWishlistController,
+    createWishlistController,
+    deleteWishlistController
 } from '../controllers/product.controller.js';
 
 const router = express.Router();
@@ -19,5 +22,10 @@ router.post('/seller/products/image', userAuthMiddleware, upload.single('image')
 router.put('/seller/products/:id', userAuthMiddleware, updateProductController);
 router.delete('/seller/products/:id', userAuthMiddleware, deleteProductController);
 router.get('/buyer/products', userAuthMiddleware, fatchAllProductController);
+
+router.post('/buyer/wishlist', userAuthMiddleware, createWishlistController);
+router.get('/buyer/wishlist', userAuthMiddleware, getWishlistController);
+router.delete('/buyer/wishlist/:productId', userAuthMiddleware, deleteWishlistController);
+
 
 export default router;

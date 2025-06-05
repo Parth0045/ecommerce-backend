@@ -1,6 +1,7 @@
 import product from '../models/products.js';
 import categories from '../models/categories.js';
 import subCategories from '../models/subCategories.js';
+import wishlist from '../models/wishlist.js';
 
 const createProduct = async ({ seller_id, ...productBody }) => {
     const createdProduct = await product.create({
@@ -72,6 +73,35 @@ const fatchAllProducts = async () => {
     return products;
 };
 
+const createWishlist = async ({ buyer_id, ...wishlistBody }) => {
+
+    const wishlistItem = await wishlist.create({
+        buyer_id,
+        ...wishlistBody,
+    });
+    return wishlistItem;
+};
+
+const getWishlist = async (userId) => {
+    console.log(userId);
+
+    const wishlistItem = await wishlist.findAll({
+        where: {
+            buyer_id: userId,
+        },
+    });
+    return wishlistItem;
+};
+
+const deleteWishlist = async (productId) => {
+    const deletedCount = await wishlist.destroy({
+        where: {
+            product_id: productId,
+        },
+    });
+    return deletedCount > 0;
+};
+
 export {
     createProduct,
     uploadProductImage,
@@ -79,4 +109,7 @@ export {
     updateProduct,
     deleteProduct,
     fatchAllProducts,
+    createWishlist,
+    deleteWishlist,
+    getWishlist
 }
