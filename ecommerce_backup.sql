@@ -5,8 +5,6 @@
 -- Dumped from database version 13.5 (Ubuntu 13.5-0ubuntu0.21.04.1)
 -- Dumped by pg_dump version 13.5 (Ubuntu 13.5-0ubuntu0.21.04.1)
 
--- Started on 2025-06-03 14:44:13 IST
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -19,7 +17,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 666 (class 1247 OID 16935)
 -- Name: enum_users_role; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -36,7 +33,6 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 204 (class 1259 OID 16800)
 -- Name: cart_items; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -54,7 +50,6 @@ CREATE TABLE public.cart_items (
 ALTER TABLE public.cart_items OWNER TO postgres;
 
 --
--- TOC entry 201 (class 1259 OID 16401)
 -- Name: categories; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -72,7 +67,6 @@ CREATE TABLE public.categories (
 ALTER TABLE public.categories OWNER TO postgres;
 
 --
--- TOC entry 207 (class 1259 OID 16859)
 -- Name: order_items; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -91,7 +85,6 @@ CREATE TABLE public.order_items (
 ALTER TABLE public.order_items OWNER TO postgres;
 
 --
--- TOC entry 206 (class 1259 OID 16836)
 -- Name: orders; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -111,7 +104,6 @@ CREATE TABLE public.orders (
 ALTER TABLE public.orders OWNER TO postgres;
 
 --
--- TOC entry 208 (class 1259 OID 16878)
 -- Name: payments; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -133,7 +125,6 @@ CREATE TABLE public.payments (
 ALTER TABLE public.payments OWNER TO postgres;
 
 --
--- TOC entry 203 (class 1259 OID 16771)
 -- Name: products; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -159,7 +150,6 @@ CREATE TABLE public.products (
 ALTER TABLE public.products OWNER TO postgres;
 
 --
--- TOC entry 209 (class 1259 OID 16902)
 -- Name: reviews; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -180,7 +170,6 @@ CREATE TABLE public.reviews (
 ALTER TABLE public.reviews OWNER TO postgres;
 
 --
--- TOC entry 202 (class 1259 OID 16410)
 -- Name: sub_categories; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -199,7 +188,6 @@ CREATE TABLE public.sub_categories (
 ALTER TABLE public.sub_categories OWNER TO postgres;
 
 --
--- TOC entry 200 (class 1259 OID 16385)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -222,7 +210,6 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 205 (class 1259 OID 16818)
 -- Name: wishlist; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -232,15 +219,14 @@ CREATE TABLE public.wishlist (
     added_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    deleted_at timestamp with time zone
+    deleted_at timestamp with time zone,
+    id uuid DEFAULT gen_random_uuid() NOT NULL
 );
 
 
 ALTER TABLE public.wishlist OWNER TO postgres;
 
 --
--- TOC entry 3145 (class 0 OID 16800)
--- Dependencies: 204
 -- Data for Name: cart_items; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -249,38 +235,37 @@ COPY public.cart_items (buyer_id, product_id, quantity, created_at, updated_at, 
 
 
 --
--- TOC entry 3142 (class 0 OID 16401)
--- Dependencies: 201
 -- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.categories (id, seller_id, category_name, is_active, created_at, updated_at, deleted_at) FROM stdin;
+e3d044b5-32b5-488c-9cb2-10860ba768c0	488f76e6-b859-4150-8c57-8db74711c975	Electronics	t	2025-06-04 17:19:24.71+05:30	2025-06-04 17:19:24.71+05:30	\N
+786dc2fc-64f3-420f-82e7-37b59a0bba0f	488f76e6-b859-4150-8c57-8db74711c975	Cloths	t	2025-06-05 09:33:46.962+05:30	2025-06-05 09:33:46.962+05:30	\N
+231cf5df-a927-4f7a-b131-497479713b78	bf3a34e0-2926-42d2-983a-2e881c32b081	Cloths	t	2025-06-05 12:00:53.822+05:30	2025-06-05 12:00:53.822+05:30	\N
+2729401c-3a8d-4123-8da4-8fba8024ebc7	bf3a34e0-2926-42d2-983a-2e881c32b081	Cloths	t	2025-06-05 12:05:36.699+05:30	2025-06-05 12:05:36.699+05:30	\N
 \.
 
 
 --
--- TOC entry 3148 (class 0 OID 16859)
--- Dependencies: 207
 -- Data for Name: order_items; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.order_items (id, order_id, product_id, price, quantity, created_at, updated_at) FROM stdin;
+f05974ad-2d88-4290-93ec-a11e76b36de9	47b5cb10-529c-40c7-9135-11e0699b9620	726f1512-65bc-465e-bdd8-55e312e1cc8e	20000.00	10	2025-06-04 17:22:53.962+05:30	2025-06-04 17:22:53.962+05:30
+72c51b27-ae8b-4e76-a7ef-80f952c49adc	47b5cb10-529c-40c7-9135-11e0699b9620	eb85c4d3-d22b-424e-9b73-8da9a2d79549	40000.00	10	2025-06-04 17:22:53.962+05:30	2025-06-04 17:22:53.962+05:30
 \.
 
 
 --
--- TOC entry 3147 (class 0 OID 16836)
--- Dependencies: 206
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.orders (id, seller_id, buyer_id, order_date, status, total_amount, delivery_address, created_at, updated_at) FROM stdin;
+47b5cb10-529c-40c7-9135-11e0699b9620	488f76e6-b859-4150-8c57-8db74711c975	488f76e6-b859-4150-8c57-8db74711c975	2025-06-04 17:22:53.955+05:30	Pending	600000.00	123 Main Street, City	2025-06-04 17:22:53.956+05:30	2025-06-04 17:22:53.956+05:30
 \.
 
 
 --
--- TOC entry 3149 (class 0 OID 16878)
--- Dependencies: 208
 -- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -289,18 +274,18 @@ COPY public.payments (id, order_id, buyer_id, seller_id, amount, payment_method,
 
 
 --
--- TOC entry 3144 (class 0 OID 16771)
--- Dependencies: 203
 -- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.products (id, seller_id, category_id, subcategory_id, product_name, description, price, quantity, image_url, is_active, created_at, updated_at, deleted_at) FROM stdin;
+726f1512-65bc-465e-bdd8-55e312e1cc8e	488f76e6-b859-4150-8c57-8db74711c975	e3d044b5-32b5-488c-9cb2-10860ba768c0	a32952fd-b573-4f9b-a58c-e6eca1d669d7	IQOO	A cordless mouse is a wireless input device that lets you interact with your computer without the constraint of a physical cable. It relies on technologies like Bluetooth® or radio frequency to communicate with your computer, providing a more flexible and convenient experience. 	20000.00	5	\N	t	2025-06-04 17:21:00.1+05:30	2025-06-04 17:21:00.1+05:30	\N
+eb85c4d3-d22b-424e-9b73-8da9a2d79549	488f76e6-b859-4150-8c57-8db74711c975	e3d044b5-32b5-488c-9cb2-10860ba768c0	a32952fd-b573-4f9b-a58c-e6eca1d669d7	IQOO 2	A cordless mouse is a wireless input device that lets you interact with your computer without the constraint of a physical cable. It relies on technologies like Bluetooth® or radio frequency to communicate with your computer, providing a more flexible and convenient experience. 	40000.00	5	https://res.cloudinary.com/dbxwglui1/image/upload/v1749038071/mh4zz9ylmkkorumqxwi4.jpg	t	2025-06-04 17:21:28.204+05:30	2025-06-04 17:24:32.42+05:30	2025-06-04 17:28:17.26+05:30
+c9df5978-bfca-4892-92dc-a6787096708b	488f76e6-b859-4150-8c57-8db74711c975	e3d044b5-32b5-488c-9cb2-10860ba768c0	a32952fd-b573-4f9b-a58c-e6eca1d669d7	IQOO 2	A cordless mouse is a wireless input device that lets you interact with your computer without the constraint of a physical cable. It relies on technologies like Bluetooth® or radio frequency to communicate with your computer, providing a more flexible and convenient experience. 	40000.00	5	\N	t	2025-06-04 17:40:52.785+05:30	2025-06-04 17:40:52.785+05:30	\N
+7af50e84-7d5a-4cc8-962f-e6868a02d308	488f76e6-b859-4150-8c57-8db74711c975	e3d044b5-32b5-488c-9cb2-10860ba768c0	a32952fd-b573-4f9b-a58c-e6eca1d669d7	IQOO z6	A cordless mouse is a wireless input device that lets you interact with your computer without the constraint of a physical cable. It relies on technologies like Bluetooth® or radio frequency to communicate with your computer, providing a more flexible and convenient experience. 	40000.00	5	https://res.cloudinary.com/dbxwglui1/image/upload/v1749039902/xo6d6thjzscqvcmazxi9.jpg	t	2025-06-04 17:54:44.239+05:30	2025-06-04 17:55:02.462+05:30	\N
 \.
 
 
 --
--- TOC entry 3150 (class 0 OID 16902)
--- Dependencies: 209
 -- Data for Name: reviews; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -309,39 +294,41 @@ COPY public.reviews (id, order_id, product_id, seller_id, buyer_id, rating, comm
 
 
 --
--- TOC entry 3143 (class 0 OID 16410)
--- Dependencies: 202
 -- Data for Name: sub_categories; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.sub_categories (id, seller_id, category_id, sub_category_name, is_active, created_at, updated_at, deleted_at) FROM stdin;
+a32952fd-b573-4f9b-a58c-e6eca1d669d7	488f76e6-b859-4150-8c57-8db74711c975	e3d044b5-32b5-488c-9cb2-10860ba768c0	Mobile	t	2025-06-04 17:19:49.559+05:30	2025-06-04 17:19:49.559+05:30	\N
+44cf3554-a346-42a8-8680-88c65d684c0e	488f76e6-b859-4150-8c57-8db74711c975	e3d044b5-32b5-488c-9cb2-10860ba768c0	Mobile 1	t	2025-06-04 17:19:55.846+05:30	2025-06-04 17:19:55.846+05:30	\N
+2af0572c-af82-45b7-a62a-9118372f279d	488f76e6-b859-4150-8c57-8db74711c975	786dc2fc-64f3-420f-82e7-37b59a0bba0f	shirt updated	t	2025-06-05 09:34:18.664+05:30	2025-06-05 09:37:24.132+05:30	2025-06-05 09:37:46.626+05:30
 \.
 
 
 --
--- TOC entry 3141 (class 0 OID 16385)
--- Dependencies: 200
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.users (id, first_name, last_name, email, password_hash, role, phone_number, is_active, created_at, updated_at, deleted_at) FROM stdin;
-99228b23-0348-47b9-ad68-256e796f831d	Parth k	khambhadiya	parthkhmbhadiya123244@gmail.com	$2b$10$ZhbWSpndNij2ksNN2aj3duC2I6apewVih1OArxYjjtd1jMi/It8KW	buyer	9327537382	t	2025-06-03 12:25:09.281+05:30	2025-06-03 12:25:09.281+05:30	\N
-37a52b02-d488-4854-8868-3c7b55a97c8a	Parth k	khambhadiya	parthkhmbhadiya1234@gmail.com	$2b$10$si0sKar82EOs2kELc.W8J.YnymlqyaBP5zhpP0tcVV8fUKHQX2.Eu	buyer	9327537382	t	2025-06-03 12:25:59.086+05:30	2025-06-03 12:27:42.954+05:30	\N
+488f76e6-b859-4150-8c57-8db74711c975	 Parth	Khambhadiya	parthkhmbhadiya1234@gmail.com	$2b$10$Bqo/d.LFXxrr6TTHbUIrdeIkfPKS2jx2NYNS5lBXS69CXeoybYrM.	buyer	+911234567890	t	2025-06-04 16:58:20.338+05:30	2025-06-05 12:21:33.724+05:30	\N
 \.
 
 
 --
--- TOC entry 3146 (class 0 OID 16818)
--- Dependencies: 205
 -- Data for Name: wishlist; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.wishlist (buyer_id, product_id, added_at, created_at, updated_at, deleted_at) FROM stdin;
+COPY public.wishlist (buyer_id, product_id, added_at, created_at, updated_at, deleted_at, id) FROM stdin;
+488f76e6-b859-4150-8c57-8db74711c975	726f1512-65bc-465e-bdd8-55e312e1cc8e	2025-06-05 09:52:19.812+05:30	2025-06-05 09:52:19.812+05:30	2025-06-05 09:52:19.812+05:30	2025-06-05 09:53:53.962+05:30	96475b6f-23d7-452e-b888-0f19ea127c7d
+488f76e6-b859-4150-8c57-8db74711c975	726f1512-65bc-465e-bdd8-55e312e1cc8e	2025-06-05 09:52:56.419+05:30	2025-06-05 09:52:56.419+05:30	2025-06-05 09:52:56.419+05:30	2025-06-05 09:53:53.962+05:30	554da997-75c3-415a-8a77-691677630386
+488f76e6-b859-4150-8c57-8db74711c975	726f1512-65bc-465e-bdd8-55e312e1cc8e	2025-06-05 09:54:14.153+05:30	2025-06-05 09:54:14.153+05:30	2025-06-05 09:54:14.153+05:30	2025-06-05 09:55:30.159+05:30	5b3cc7a4-958d-4964-b61b-93fa196a695e
+488f76e6-b859-4150-8c57-8db74711c975	726f1512-65bc-465e-bdd8-55e312e1cc8e	2025-06-05 09:56:09.524+05:30	2025-06-05 09:56:09.525+05:30	2025-06-05 09:56:09.525+05:30	2025-06-05 09:56:18.347+05:30	7624079e-074f-4626-96db-e812759c0fa7
+488f76e6-b859-4150-8c57-8db74711c975	726f1512-65bc-465e-bdd8-55e312e1cc8e	2025-06-05 09:56:10.475+05:30	2025-06-05 09:56:10.475+05:30	2025-06-05 09:56:10.475+05:30	2025-06-05 09:56:18.347+05:30	42c6b01c-f9e6-4dcb-a9b5-8cb24a1647c6
+488f76e6-b859-4150-8c57-8db74711c975	726f1512-65bc-465e-bdd8-55e312e1cc8e	2025-06-05 09:58:02.403+05:30	2025-06-05 09:58:02.404+05:30	2025-06-05 09:58:02.404+05:30	2025-06-05 09:58:11.348+05:30	fbf266cc-0d94-4b6b-9893-536445fdedd8
+488f76e6-b859-4150-8c57-8db74711c975	726f1512-65bc-465e-bdd8-55e312e1cc8e	2025-06-05 09:58:03.236+05:30	2025-06-05 09:58:03.236+05:30	2025-06-05 09:58:03.236+05:30	2025-06-05 09:58:11.348+05:30	c14bd64e-c96f-464d-bea1-8271187bc3a8
 \.
 
 
 --
--- TOC entry 2982 (class 2606 OID 16807)
 -- Name: cart_items cart_items_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -350,7 +337,6 @@ ALTER TABLE ONLY public.cart_items
 
 
 --
--- TOC entry 2976 (class 2606 OID 16409)
 -- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -359,7 +345,6 @@ ALTER TABLE ONLY public.categories
 
 
 --
--- TOC entry 2988 (class 2606 OID 16867)
 -- Name: order_items order_items_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -368,7 +353,6 @@ ALTER TABLE ONLY public.order_items
 
 
 --
--- TOC entry 2986 (class 2606 OID 16848)
 -- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -377,7 +361,6 @@ ALTER TABLE ONLY public.orders
 
 
 --
--- TOC entry 2990 (class 2606 OID 16886)
 -- Name: payments payments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -386,7 +369,6 @@ ALTER TABLE ONLY public.payments
 
 
 --
--- TOC entry 2980 (class 2606 OID 16784)
 -- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -395,7 +377,6 @@ ALTER TABLE ONLY public.products
 
 
 --
--- TOC entry 2992 (class 2606 OID 16913)
 -- Name: reviews reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -404,7 +385,6 @@ ALTER TABLE ONLY public.reviews
 
 
 --
--- TOC entry 2978 (class 2606 OID 16418)
 -- Name: sub_categories sub_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -413,7 +393,6 @@ ALTER TABLE ONLY public.sub_categories
 
 
 --
--- TOC entry 2972 (class 2606 OID 16400)
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -422,7 +401,6 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2974 (class 2606 OID 16398)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -431,16 +409,14 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2984 (class 2606 OID 16825)
 -- Name: wishlist wishlist_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.wishlist
-    ADD CONSTRAINT wishlist_pkey PRIMARY KEY (buyer_id, product_id);
+    ADD CONSTRAINT wishlist_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 2996 (class 2606 OID 16808)
 -- Name: cart_items fk_buyer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -449,7 +425,6 @@ ALTER TABLE ONLY public.cart_items
 
 
 --
--- TOC entry 2998 (class 2606 OID 16826)
 -- Name: wishlist fk_buyer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -458,7 +433,6 @@ ALTER TABLE ONLY public.wishlist
 
 
 --
--- TOC entry 3001 (class 2606 OID 16854)
 -- Name: orders fk_buyer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -467,7 +441,6 @@ ALTER TABLE ONLY public.orders
 
 
 --
--- TOC entry 3005 (class 2606 OID 16892)
 -- Name: payments fk_buyer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -476,7 +449,6 @@ ALTER TABLE ONLY public.payments
 
 
 --
--- TOC entry 3010 (class 2606 OID 16929)
 -- Name: reviews fk_buyer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -485,7 +457,6 @@ ALTER TABLE ONLY public.reviews
 
 
 --
--- TOC entry 2994 (class 2606 OID 16790)
 -- Name: products fk_category; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -494,7 +465,6 @@ ALTER TABLE ONLY public.products
 
 
 --
--- TOC entry 3002 (class 2606 OID 16868)
 -- Name: order_items fk_order; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -503,7 +473,6 @@ ALTER TABLE ONLY public.order_items
 
 
 --
--- TOC entry 3004 (class 2606 OID 16887)
 -- Name: payments fk_order; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -512,7 +481,6 @@ ALTER TABLE ONLY public.payments
 
 
 --
--- TOC entry 3007 (class 2606 OID 16914)
 -- Name: reviews fk_order; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -521,7 +489,6 @@ ALTER TABLE ONLY public.reviews
 
 
 --
--- TOC entry 2997 (class 2606 OID 16813)
 -- Name: cart_items fk_product; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -530,7 +497,6 @@ ALTER TABLE ONLY public.cart_items
 
 
 --
--- TOC entry 2999 (class 2606 OID 16831)
 -- Name: wishlist fk_product; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -539,7 +505,6 @@ ALTER TABLE ONLY public.wishlist
 
 
 --
--- TOC entry 3003 (class 2606 OID 16873)
 -- Name: order_items fk_product; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -548,7 +513,6 @@ ALTER TABLE ONLY public.order_items
 
 
 --
--- TOC entry 3008 (class 2606 OID 16919)
 -- Name: reviews fk_product; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -557,7 +521,6 @@ ALTER TABLE ONLY public.reviews
 
 
 --
--- TOC entry 2993 (class 2606 OID 16785)
 -- Name: products fk_seller; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -566,7 +529,6 @@ ALTER TABLE ONLY public.products
 
 
 --
--- TOC entry 3000 (class 2606 OID 16849)
 -- Name: orders fk_seller; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -575,7 +537,6 @@ ALTER TABLE ONLY public.orders
 
 
 --
--- TOC entry 3006 (class 2606 OID 16897)
 -- Name: payments fk_seller; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -584,7 +545,6 @@ ALTER TABLE ONLY public.payments
 
 
 --
--- TOC entry 3009 (class 2606 OID 16924)
 -- Name: reviews fk_seller; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -593,15 +553,12 @@ ALTER TABLE ONLY public.reviews
 
 
 --
--- TOC entry 2995 (class 2606 OID 16795)
 -- Name: products fk_subcategory; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.products
     ADD CONSTRAINT fk_subcategory FOREIGN KEY (subcategory_id, seller_id, category_id) REFERENCES public.sub_categories(id, seller_id, category_id) ON DELETE SET NULL;
 
-
--- Completed on 2025-06-03 14:44:17 IST
 
 --
 -- PostgreSQL database dump complete
