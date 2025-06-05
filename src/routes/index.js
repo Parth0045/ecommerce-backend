@@ -2,7 +2,6 @@ import { Router } from 'express';
 
 import authRoutes from './auth.routes.js';
 import categoriesRoutes from './category.routes.js';
-import subCategoriesRoutes from './subcategory.routes.js';
 import productsRoutes from './product.routes.js';
 import cartRoutes from './cart.routes.js';
 import wishlistRoutes from './wishlist.routes.js';
@@ -16,7 +15,6 @@ const router = Router();
 router.use('/api/auth', authRoutes);
 router.use('/api', userRoutes);
 router.use('/api', categoriesRoutes);
-router.use('/api', subCategoriesRoutes);
 router.use('/api', productsRoutes);
 router.use('/api', cartRoutes );
 router.use('/api', wishlistRoutes );
