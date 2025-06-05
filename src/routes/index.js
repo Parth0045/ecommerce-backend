@@ -11,13 +11,14 @@ import userRoutes from './user.route.js';
 
 const router = Router();
 
-router.use('/api/auth', authRoutes);
-router.use('/api', userRoutes);
-router.use('/api', categoriesRoutes);
-router.use('/api', productsRoutes);
-router.use('/api', cartRoutes );
-router.use('/api', orderRoutes );
-router.use('/api', paymentRoutes );
-router.use('/api', reviewRoutes );
+router.use('/auth', authRoutes);
+router.use(userRoutes);
+router.use(categoriesRoutes);
+router.use(productsRoutes);
+router.use(cartRoutes);
+router.use(orderRoutes);
+router.use(paymentRoutes);
+router.use(reviewRoutes);
+
 
 export default router;
