@@ -37,22 +37,11 @@ const users = sequelize.define('User', {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
   },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-  updated_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-  deleted_at: {
-    type: DataTypes.DATE,
-  },
 }, {
   tableName: 'users',
-  timestamps: true,
-  paranoid: true,
-  underscored: true,
+  timestamps: true,    // Enables created_at and updated_at managed by Sequelize
+  paranoid: true,      // Enables soft deletes with deleted_at managed by Sequelize
+  underscored: true,   // Uses snake_case column names like created_at instead of createdAt
   hooks: {
     beforeCreate: async (user) => {
       if (user.password_hash) {
@@ -72,7 +61,7 @@ const users = sequelize.define('User', {
 function validPassword(password) {
   return bcrypt.compareSync(password, this.password_hash);
 }
-users.prototype.validPassword = validPassword;
 
+users.prototype.validPassword = validPassword;
 
 export default users;

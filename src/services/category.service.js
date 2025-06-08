@@ -2,7 +2,9 @@ import categories from '../models/categories.js';
 import subCategories from '../models/subCategories.js';
 
 const createCategory = async ({ seller_id, category_name }) => {
-
+if (!category_name) {
+  console.log("not have category name");
+}
     const category = await categories.create({
         seller_id,
         category_name,

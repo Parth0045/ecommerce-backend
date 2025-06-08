@@ -15,7 +15,7 @@ const createCategoryController = async (req, res) => {
    
     try {
    
-        const categories = await createCategory({ seller_id: req.user.id});
+        const categories = await createCategory({ seller_id: req.user.id, ...req.body });
    
         return res.status(200).json({
             error: false,
